@@ -14,13 +14,20 @@ import java.util.ArrayList;
  *
  * @author Daryl Ospina
  */
-public class NumericExpressionStatement extends Statement {
+public class NumericExpressionStatement extends Statement{
 
     private int state;
     private final int STATE_TOTAL;
     private int openedParenthesis;
+    
+    public static String[] typesLexemes = {
+        LexemeTypes.NUMBERS,
+        LexemeTypes.GROUPING_SYMBOLS,
+        LexemeTypes.ARITHMETIC_OPERATORS
+    };
 
-    public NumericExpressionStatement() {
+    public NumericExpressionStatement(Statement root) {
+        this.root = root;
         this.state = 0;
         this.STATE_TOTAL = 3;
         this.childs = new ArrayList<>();
@@ -84,6 +91,7 @@ public class NumericExpressionStatement extends Statement {
         }
     }
 
+    @Override
     public Statement getStatement() {
         if (this.openedParenthesis == 0 && this.state == 1) {
             this.state = 3;
@@ -92,5 +100,14 @@ public class NumericExpressionStatement extends Statement {
             return this;
         }
         return null;
+    }
+    
+    public static boolean lexemesIs(String type){
+        for (String typeLexeme : NumericExpressionStatement.typesLexemes) {
+            if (type.equals(typeLexeme)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -21,12 +21,18 @@ public abstract class Statement implements TreeNode{
      * Sentencia dentro de la que se encuentra esta sentencia.
      */
     protected Statement root;
+
     /**
      * Hijos de la raiz de derivacion.
      */
     protected List<Statement> childs;
     
     public abstract boolean analize(Lexeme lexeme);
+    public abstract Statement getStatement();
+    
+    public void addChild(Statement child){
+        this.childs.add(child);
+    }
     
     @Override
     public TreeNode getChildAt(int childIndex) {

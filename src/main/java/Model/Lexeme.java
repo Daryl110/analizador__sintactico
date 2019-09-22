@@ -66,5 +66,10 @@ public class Lexeme extends Statement{
     public boolean analize(Lexeme lexeme) {
         return lexeme.getType().equals(this.type) && lexeme.word.equals(this.word);
     }
+
+    @Override
+    public Statement getStatement() {
+        return this;
+    }
     
 }

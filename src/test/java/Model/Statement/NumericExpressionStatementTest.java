@@ -46,7 +46,7 @@ public class NumericExpressionStatementTest {
         lexemes.add(new Lexeme(0, 0, "7", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.GROUPING_SYMBOLS));
 
-        NumericExpressionStatement instance = new NumericExpressionStatement();
+        NumericExpressionStatement instance = new NumericExpressionStatement(null);
         
         lexemes.forEach((lexeme) -> {
             instance.analize(lexeme);

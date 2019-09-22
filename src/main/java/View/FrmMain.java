@@ -6,11 +6,10 @@
 package View;
 
 import Controller.LexemeController;
-import java.io.IOException;
-import java.net.ConnectException;
+import Model.SyntacticAnalizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.simple.parser.ParseException;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  *
@@ -18,7 +17,8 @@ import org.json.simple.parser.ParseException;
  */
 public class FrmMain extends javax.swing.JFrame {
 
-    private LexemeController ctlLexeme;
+    private final LexemeController ctlLexeme;
+    private SyntacticAnalizer syntacticAnalizer;
     
     /**
      * Creates new form FrmMain
@@ -38,15 +38,15 @@ public class FrmMain extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
+        treeDerivation = new javax.swing.JTree();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblLexemes = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        btnAnalize = new javax.swing.JButton();
         btnUpdateLexemes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jScrollPane1.setViewportView(jTree1);
+        jScrollPane1.setViewportView(treeDerivation);
 
         tblLexemes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -58,9 +58,14 @@ public class FrmMain extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tblLexemes);
 
-        jButton1.setBackground(new java.awt.Color(51, 255, 51));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Analizar");
+        btnAnalize.setBackground(new java.awt.Color(51, 255, 51));
+        btnAnalize.setForeground(new java.awt.Color(255, 255, 255));
+        btnAnalize.setText("Analizar");
+        btnAnalize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnalizeActionPerformed(evt);
+            }
+        });
 
         btnUpdateLexemes.setBackground(new java.awt.Color(51, 153, 255));
         btnUpdateLexemes.setForeground(new java.awt.Color(255, 255, 255));
@@ -77,14 +82,16 @@ public class FrmMain extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAnalize, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnUpdateLexemes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(btnUpdateLexemes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -97,9 +104,8 @@ public class FrmMain extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnUpdateLexemes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, 0)))
+                            .addComponent(btnAnalize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnUpdateLexemes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -108,18 +114,23 @@ public class FrmMain extends javax.swing.JFrame {
 
     private void btnUpdateLexemesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateLexemesActionPerformed
         try {
-            tblLexemes.setModel(this.ctlLexeme.updateLexemes());
+            this.tblLexemes.setModel(this.ctlLexeme.updateLexemes());
+            this.syntacticAnalizer = new SyntacticAnalizer(this.ctlLexeme.lexemes);
         }catch (Exception ex){
             Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, "{0}", ex.getMessage());
         }
     }//GEN-LAST:event_btnUpdateLexemesActionPerformed
 
+    private void btnAnalizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizeActionPerformed
+        this.treeDerivation.setModel(new DefaultTreeModel(this.syntacticAnalizer.analize()));
+    }//GEN-LAST:event_btnAnalizeActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAnalize;
     private javax.swing.JButton btnUpdateLexemes;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTree jTree1;
     private javax.swing.JTable tblLexemes;
+    private javax.swing.JTree treeDerivation;
     // End of variables declaration//GEN-END:variables
 }

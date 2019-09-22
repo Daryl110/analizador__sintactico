@@ -8,7 +8,6 @@ package Controller;
 import Model.Lexeme;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -28,7 +27,7 @@ import org.json.simple.parser.ParseException;
  */
 public class LexemeController {
 
-    private ArrayList<Lexeme> lexemes;
+    public ArrayList<Lexeme> lexemes;
 
     public LexemeController() {
         this.lexemes = new ArrayList<>();
