@@ -64,7 +64,7 @@ public class NumericExpressionStatement extends Statement {
                     this.childs.add(lexeme);
                     this.state = 2;
                     this.openedParenthesis--;
-                    if (this.openedParenthesis == 0) {
+                    if (this.openedParenthesis == 0 && this.childs.size() > 2) {
                         this.state = 3;
                     }
                     return true;
@@ -85,7 +85,7 @@ public class NumericExpressionStatement extends Statement {
     }
 
     public Statement getStatement() {
-        if (this.openedParenthesis == 0) {
+        if (this.openedParenthesis == 0 && this.state == 1) {
             this.state = 3;
         }
         if (this.state == this.STATE_TOTAL) {
