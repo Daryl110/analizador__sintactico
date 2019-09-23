@@ -31,12 +31,11 @@ public class SyntacticAnalizer {
                 Statement expression = new ExpressionStatement(statement);
                 if (expression.analyze(this.lexemes.get(i))) {
                     Statement exp = null;
+                    int aux = i;
                     for (int j = i + 1; j < this.lexemes.size(); j++) {
                         if (expression.analyze(this.lexemes.get(j))) {
                             exp = expression.getStatement();
-                            if (exp != null && (!ExpressionStatement.lexemeIsNumeric(this.lexemes.get(j).getType())
-                                    || j == this.lexemes.size()-1)) {
-                                statement.addChild(exp);
+                            if (exp != null) {
                                 i = j;
                             }
                         } else {
@@ -44,7 +43,10 @@ public class SyntacticAnalizer {
                         }
                     }
                     if (exp != null) {
+                        statement.addChild(exp);
                         continue;
+                    }else{
+                        i = aux;
                     }
                 }
             }
@@ -56,7 +58,6 @@ public class SyntacticAnalizer {
                         if (expression.analyze(this.lexemes.get(j))) {
                             exp = expression.getStatement();
                             if (exp != null) {
-                                statement.addChild(exp);
                                 i = j;
                                 break;
                             }
@@ -65,6 +66,7 @@ public class SyntacticAnalizer {
                         }
                     }
                     if (exp != null) {
+                        statement.addChild(exp);
                         continue;
                     }
                 }
