@@ -27,7 +27,28 @@ public class SyntacticAnalizer {
 
         for (int i = 0; i < this.lexemes.size(); i++) {
             Lexeme lexeme = this.lexemes.get(i);
-            if (ExpressionStatement.lexemesIs(lexeme.getType())) {
+            if (ExpressionStatement.lexemeIsNumeric(lexeme.getType())) {
+                Statement expression = new ExpressionStatement(statement);
+                if (expression.analyze(this.lexemes.get(i))) {
+                    Statement exp = null;
+                    for (int j = i + 1; j < this.lexemes.size(); j++) {
+                        if (expression.analyze(this.lexemes.get(j))) {
+                            exp = expression.getStatement();
+                            if (exp != null && (!ExpressionStatement.lexemeIsNumeric(this.lexemes.get(j).getType())
+                                    || j == this.lexemes.size()-1)) {
+                                statement.addChild(exp);
+                                i = j;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                    if (exp != null) {
+                        continue;
+                    }
+                }
+            }
+            if (ExpressionStatement.lexemeIsCharacter(lexeme.getType())) {
                 Statement expression = new ExpressionStatement(statement);
                 if (expression.analyze(this.lexemes.get(i))) {
                     Statement exp = null;

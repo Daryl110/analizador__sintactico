@@ -15,11 +15,11 @@ import java.util.ArrayList;
  * @author Daryl Ospina
  */
 public class ExpressionStatement extends Statement {
-    
+
     private boolean numeric, character;
     private int state;
-    private final Statement numericExpression, characterExpression;
-    
+    private Statement numericExpression, characterExpression;
+
     public static ArrayList<String> typesLexemes = new ArrayList<>();
 
     public ExpressionStatement(Statement root) {
@@ -36,6 +36,7 @@ public class ExpressionStatement extends Statement {
     public boolean analyze(Lexeme lexeme) {
         if (NumericExpressionStatement.lexemesIs(lexeme.getType()) && !this.character) {
             if (this.numericExpression.analyze(lexeme)) {
+                this.characterExpression = null;
                 this.numeric = true;
                 if (this.numericExpression.getStatement() != null) {
                     this.state = 1;
@@ -45,6 +46,7 @@ public class ExpressionStatement extends Statement {
         }
         if (CharacterExpressionStatement.lexemesIs(lexeme.getType()) && !this.numeric) {
             if (this.characterExpression.analyze(lexeme)) {
+                this.numericExpression = null;
                 this.character = true;
                 if (this.characterExpression.getStatement() != null) {
                     this.state = 2;
@@ -66,11 +68,20 @@ public class ExpressionStatement extends Statement {
                 return null;
         }
     }
-    
-    public static boolean lexemesIs(String type){
+
+    public static boolean lexemeIsNumeric(String type) {
         for (String typeLexeme : NumericExpressionStatement.typesLexemes) {
             ExpressionStatement.typesLexemes.add(typeLexeme);
         }
+        for (String typeLexeme : ExpressionStatement.typesLexemes) {
+            if (type.equals(typeLexeme)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static boolean lexemeIsCharacter(String type){
         for (String typeLexeme : CharacterExpressionStatement.typesLexemes) {
             ExpressionStatement.typesLexemes.add(typeLexeme);
         }
