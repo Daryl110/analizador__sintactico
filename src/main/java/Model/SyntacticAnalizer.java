@@ -6,7 +6,7 @@
 package Model;
 
 import Model.Statement.CompilationUnitStatement;
-import Model.Statement.NumericExpressionStatement;
+import Model.Statement.ExpressionStatement;
 import Model.Statement.Structure.Statement;
 import java.util.ArrayList;
 
@@ -22,21 +22,29 @@ public class SyntacticAnalizer {
         this.lexemes = lexemes;
     }
 
-    public Statement analize() {
+    public Statement analyze() {
         Statement statement = new CompilationUnitStatement();
 
         for (int i = 0; i < this.lexemes.size(); i++) {
             Lexeme lexeme = this.lexemes.get(i);
-            if (NumericExpressionStatement.lexemesIs(lexeme.getType())) {
-                Statement numericExpression = new NumericExpressionStatement(statement);
-                if (numericExpression.analize(this.lexemes.get(i))) {
+            if (ExpressionStatement.lexemesIs(lexeme.getType())) {
+                Statement expression = new ExpressionStatement(statement);
+                if (expression.analyze(this.lexemes.get(i))) {
+                    Statement exp = null;
                     for (int j = i + 1; j < this.lexemes.size(); j++) {
-                        if (numericExpression.analize(this.lexemes.get(j))) {
-                            if (numericExpression.getStatement() != null) {
-                                statement.addChild(numericExpression);
+                        if (expression.analyze(this.lexemes.get(j))) {
+                            exp = expression.getStatement();
+                            if (exp != null) {
+                                statement.addChild(exp);
                                 i = j;
+                                break;
                             }
+                        } else {
+                            break;
                         }
+                    }
+                    if (exp != null) {
+                        continue;
                     }
                 }
             }

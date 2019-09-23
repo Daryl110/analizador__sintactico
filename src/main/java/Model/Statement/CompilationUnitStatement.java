@@ -6,6 +6,7 @@
 package Model.Statement;
 
 import Model.Lexeme;
+import Model.Statement.Structure.SintacticTypes;
 import Model.Statement.Structure.Statement;
 import java.util.ArrayList;
 
@@ -21,13 +22,18 @@ public class CompilationUnitStatement extends Statement{
     }
 
     @Override
-    public boolean analize(Lexeme lexeme) {
+    public boolean analyze(Lexeme lexeme) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Statement getStatement() {
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return SintacticTypes.COMPILATION_UNIT;
     }
     
 }

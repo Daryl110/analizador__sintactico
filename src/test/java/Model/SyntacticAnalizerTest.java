@@ -3,31 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.Statement;
+package Model;
 
-import Model.Lexeme;
-import Model.LexemeTypes;
+import Model.Statement.Structure.Statement;
 import java.util.ArrayList;
-import java.util.logging.Logger;
-import org.junit.Assert;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author Daryl Ospina
  */
-public class NumericExpressionStatementTest {
+public class SyntacticAnalizerTest {
     
-    static final Logger log = Logger.getLogger(NumericExpressionStatementTest.class.getName());
-
     @Test
-    public void testAnalize() {
-        log.info("Character Expression Analyze");
-        log.info("Expression to analyze ((5-6)*(5+6))/5*(5-7)");
+    public void testAnalyze() {
+        System.out.println("analyze");
+        
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
-        // expresion a validar ((5-6)*(5+6))/5*(5-7)
-
+        lexemes.add(new Lexeme(0, 0, "'", LexemeTypes.SINGLE_QUOTE));
+        lexemes.add(new Lexeme(0, 0, "d", LexemeTypes.CHAR));
+        lexemes.add(new Lexeme(0, 0, "'", LexemeTypes.SINGLE_QUOTE));
+        
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
@@ -49,14 +47,8 @@ public class NumericExpressionStatementTest {
         lexemes.add(new Lexeme(0, 0, "-", LexemeTypes.ARITHMETIC_OPERATORS));
         lexemes.add(new Lexeme(0, 0, "7", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-
-        NumericExpressionStatement instance = new NumericExpressionStatement(null);
         
-        lexemes.forEach((lexeme) -> {
-            instance.analyze(lexeme);
-        });
-        
-        Assert.assertNotEquals(null, instance.getStatement());
+        assertNotEquals(null, new SyntacticAnalizer(lexemes).analyze());
     }
-
+    
 }

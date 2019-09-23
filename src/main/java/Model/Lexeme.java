@@ -59,11 +59,11 @@ public class Lexeme extends Statement{
 
     @Override
     public String toString() {
-        return "{ token: "+this.word+", tipo: "+this.type+", posicion: { row: "+this.row+", column: "+this.column+"}}"; //To change body of generated methods, choose Tools | Templates.
+        return "{ token: "+this.word+", tipo: "+this.type+", posicion: { row: "+this.row+", column: "+this.column+" } }";
     }
 
     @Override
-    public boolean analize(Lexeme lexeme) {
+    public boolean analyze(Lexeme lexeme) {
         return lexeme.getType().equals(this.type) && lexeme.word.equals(this.word);
     }
 

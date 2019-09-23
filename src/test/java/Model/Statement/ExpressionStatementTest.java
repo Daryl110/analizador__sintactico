@@ -16,18 +16,22 @@ import org.junit.Test;
  *
  * @author Daryl Ospina
  */
-public class NumericExpressionStatementTest {
+public class ExpressionStatementTest {
     
-    static final Logger log = Logger.getLogger(NumericExpressionStatementTest.class.getName());
-
+    static final Logger log = Logger.getLogger(ExpressionStatementTest.class.getName());
+    
     @Test
-    public void testAnalize() {
-        log.info("Character Expression Analyze");
-        log.info("Expression to analyze ((5-6)*(5+6))/5*(5-7)");
+    public void testAnalyze() {
+        log.info("Expression Analyze");
+        log.info("Expression to analyze 'a' o ((5-6)*(5+6))/5*(5-7)");
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
-        // expresion a validar ((5-6)*(5+6))/5*(5-7)
+        // expresion a validar 'a' o ((5-6)*(5+6))/5*(5-7)
 
+//        lexemes.add(new Lexeme(0, 0, "'", LexemeTypes.SINGLE_QUOTE));
+//        lexemes.add(new Lexeme(0, 0, "a", LexemeTypes.CHAR));
+//        lexemes.add(new Lexeme(0, 0, "'", LexemeTypes.SINGLE_QUOTE));
+        
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
@@ -50,7 +54,7 @@ public class NumericExpressionStatementTest {
         lexemes.add(new Lexeme(0, 0, "7", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
 
-        NumericExpressionStatement instance = new NumericExpressionStatement(null);
+        ExpressionStatement instance = new ExpressionStatement(null);
         
         lexemes.forEach((lexeme) -> {
             instance.analyze(lexeme);
@@ -58,5 +62,4 @@ public class NumericExpressionStatementTest {
         
         Assert.assertNotEquals(null, instance.getStatement());
     }
-
 }

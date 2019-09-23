@@ -27,8 +27,10 @@ public abstract class Statement implements TreeNode{
      */
     protected List<Statement> childs;
     
-    public abstract boolean analize(Lexeme lexeme);
+    public abstract boolean analyze(Lexeme lexeme);
     public abstract Statement getStatement();
+    @Override
+    public abstract String toString();
     
     public void addChild(Statement child){
         this.childs.add(child);

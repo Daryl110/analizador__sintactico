@@ -122,7 +122,7 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateLexemesActionPerformed
 
     private void btnAnalizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizeActionPerformed
-        this.treeDerivation.setModel(new DefaultTreeModel(this.syntacticAnalizer.analize()));
+        this.treeDerivation.setModel(new DefaultTreeModel(this.syntacticAnalizer.analyze()));
     }//GEN-LAST:event_btnAnalizeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
