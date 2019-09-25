@@ -38,6 +38,7 @@ jobs:
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
       # checkstyle comprobation
+      - run: mvn checkstyle:checkstyle
       - run: mvn checkstyle:check
 
       # run tests!
