@@ -5,11 +5,13 @@
  */
 package Model;
 
+import Model.Statement.Structure.Statement;
+
 /**
  *
  * @author Daryl Ospina
  */
-public class Lexeme {
+public class Lexeme extends Statement{
     
     private int row;
     private int column;
@@ -57,7 +59,17 @@ public class Lexeme {
 
     @Override
     public String toString() {
-        return "{ token: "+this.word+", tipo: "+this.type+", posicion: { row: "+this.row+", column: "+this.column+"}}"; //To change body of generated methods, choose Tools | Templates.
+        return "{ token: "+this.word+", tipo: "+this.type+", posicion: { row: "+this.row+", column: "+this.column+" } }";
+    }
+
+    @Override
+    public boolean analyze(Lexeme lexeme) {
+        return lexeme.getType().equals(this.type) && lexeme.word.equals(this.word);
+    }
+
+    @Override
+    public Statement getStatement() {
+        return this;
     }
     
 }
