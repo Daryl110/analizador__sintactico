@@ -7,7 +7,7 @@ package Model.Statement;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
-import Model.Statement.Structure.SintacticTypes;
+import Model.Statement.Structure.SyntacticTypes;
 import Model.Statement.Structure.Statement;
 import java.util.ArrayList;
 
@@ -21,44 +21,25 @@ public class CharacterExpressionStatement extends Statement {
     private final int STATE_TOTAL;
 
     public static String[] typesLexemes = {
-        LexemeTypes.SINGLE_QUOTE,
         LexemeTypes.CHAR
     };
 
     public CharacterExpressionStatement(Statement root) {
         this.root = root;
         this.state = 0;
-        this.STATE_TOTAL = 3;
+        this.STATE_TOTAL = 1;
         this.childs = new ArrayList<>();
     }
 
     @Override
     public boolean analyze(Lexeme lexeme) {
-        switch (this.state) {
-            case 0:
-                if (lexeme.getType().equals(LexemeTypes.SINGLE_QUOTE)) {
-                    this.childs.add(lexeme);
-                    this.state = 1;
-                    return true;
-                }
-                return false;
-            case 1:
-                if (lexeme.getType().equals(LexemeTypes.CHAR)) {
-                    this.childs.add(lexeme);
-                    this.state = 2;
-                    return true;
-                }
-                return false;
-            case 2:
-                if (lexeme.getType().equals(LexemeTypes.SINGLE_QUOTE)) {
-                    this.childs.add(lexeme);
-                    this.state = 3;
-                    return true;
-                }
-                return false;
-            default:
-                return false;
+        if (this.state == 0 && (lexeme.getType().equals(LexemeTypes.CHAR)
+                || lexeme.getType().equals(LexemeTypes.IDENTIFIERS))) {
+            this.childs.add(lexeme);
+            this.state = 1;
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -68,8 +49,8 @@ public class CharacterExpressionStatement extends Statement {
         }
         return null;
     }
-    
-    public static boolean lexemesIs(String type){
+
+    public static boolean lexemesIs(String type) {
         for (String typeLexeme : CharacterExpressionStatement.typesLexemes) {
             if (type.equals(typeLexeme)) {
                 return true;
@@ -80,6 +61,6 @@ public class CharacterExpressionStatement extends Statement {
 
     @Override
     public String toString() {
-        return SintacticTypes.CHAR_EXPRESSION;
+        return SyntacticTypes.CHAR_EXPRESSION;
     }
 }

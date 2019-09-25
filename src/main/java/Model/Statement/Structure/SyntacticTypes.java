@@ -9,10 +9,11 @@ package Model.Statement.Structure;
  *
  * @author Daryl Ospina
  */
-public class SintacticTypes {
+public class SyntacticTypes {
     
     public static String COMPILATION_UNIT = "Compilation Unit";
     public static String EXPRESSION = "Expression";
     public static String CHAR_EXPRESSION = "Character Expression";
     public static String NUMERIC_EXPRESSION = "Numeric Expression";
+    public static String RELATIONAL_EXPRESSION = "Relational Expression";
 }

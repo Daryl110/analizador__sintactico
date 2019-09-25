@@ -3,39 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Model.Statement;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
-import com.google.gson.Gson;
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.table.DefaultTableModel;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author Daryl Ospina
  */
-public class LexemeController {
-
-    public ArrayList<Lexeme> lexemes;
-
-    public LexemeController() {
-        this.lexemes = new ArrayList<>();
-    }
-
-    public DefaultTableModel updateLexemes(String ip, int port) throws IOException, InterruptedException, ParseException, Exception {
-        this.lexemes = new ArrayList<>();
+public class RelationalExpressionStatementTest {
+    
+    static final Logger log = Logger.getLogger(CharacterExpressionStatementTest.class.getName());
+    
+    @Test
+    public void testAnalyze() {
+        log.info("Relational Expression Analyze");
+        log.info("Expression to analyze ((b-6)*(5+6))/5*(5-x) == ((b-6)*(5+6))/5*(5-x) >= ((b-6)*(5+6))/5*(5-x)");
+        
+        // expresion a validar ((b-6)*(5+6))/5*(5-x) == ((b-6)*(5+6))/5*(5-x) >= ((b-6)*(5+6))/5*(5-x)
+        
+        ArrayList<Lexeme> lexemes = new ArrayList<>();
         
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
@@ -60,7 +53,7 @@ public class LexemeController {
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
         
-        this.lexemes.add(new Lexeme(0, 0, "<=", LexemeTypes.RELATIONAL_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "==", LexemeTypes.RELATIONAL_OPERATORS));
         
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
@@ -75,9 +68,17 @@ public class LexemeController {
         lexemes.add(new Lexeme(0, 0, "6", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "/", LexemeTypes.ARITHMETIC_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, "*", LexemeTypes.ARITHMETIC_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, "-", LexemeTypes.ARITHMETIC_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "x", LexemeTypes.IDENTIFIERS));
+        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
         
-        this.lexemes.add(new Lexeme(0, 0, "<=", LexemeTypes.RELATIONAL_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, ">=", LexemeTypes.RELATIONAL_OPERATORS));
         
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
@@ -92,43 +93,27 @@ public class LexemeController {
         lexemes.add(new Lexeme(0, 0, "6", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "/", LexemeTypes.ARITHMETIC_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, "*", LexemeTypes.ARITHMETIC_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, "-", LexemeTypes.ARITHMETIC_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "x", LexemeTypes.IDENTIFIERS));
+        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
         
-        DefaultTableModel model = new DefaultTableModel();
-
-        model.addColumn("Token");
-        model.addColumn("Type");
-        model.addColumn("Positions");
-
-//        HttpClient httpClient = HttpClient.newBuilder()
-//                .version(HttpClient.Version.HTTP_2)
-//                .build();
-//
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .uri(URI.create("http://"+ip+":"+port+"/analizador_lexico/lexemes"))
-//                .GET()
-//                .build();
-//
-//        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-//
-//        JSONArray array = (JSONArray) (new JSONParser().parse(response.body()));
-//
-//        Gson gson = new Gson();
-//        
-//        array.stream().map((obj) -> (JSONObject) obj).map((jsonLexeme) -> gson.fromJson(jsonLexeme.toString(), Lexeme.class)).forEachOrdered((lexeme) -> {
-//            this.lexemes.add((Lexeme) lexeme);
-//        });
-//
-//        Logger.getLogger(LexemeController.class.getName()).log(Level.INFO, "Response body: {0}", this.lexemes.toString());
+        RelationalExpressionStatement rel = new RelationalExpressionStatement(null);
         
-        this.lexemes.forEach((lexeme) -> {
-            model.addRow(new Object[]{
-                lexeme.getWord(),
-                lexeme.getType(),
-                "row: "+lexeme.getRow()+" - columns: "+lexeme.getColumn()
-            });
-        });
-
-        return model;
+        for (Lexeme lexeme: lexemes) {
+            try {
+                rel.analyze(lexeme);
+            } catch (Exception ex) {
+                Logger.getLogger(RelationalExpressionStatementTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        assertNotEquals(null, rel.getStatement());
     }
+    
 }

@@ -28,9 +28,7 @@ public class CharacterExpressionStatementTest {
         
         // expresion a validar 'a'
 
-        lexemes.add(new Lexeme(0, 0, "'", LexemeTypes.SINGLE_QUOTE));
-        lexemes.add(new Lexeme(0, 0, "a", LexemeTypes.CHAR));
-        lexemes.add(new Lexeme(0, 0, "'", LexemeTypes.SINGLE_QUOTE));
+        lexemes.add(new Lexeme(0, 0, "'a'", LexemeTypes.CHAR));
 
         CharacterExpressionStatement instance = new CharacterExpressionStatement(null);
         

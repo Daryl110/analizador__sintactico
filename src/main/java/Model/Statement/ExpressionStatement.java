@@ -6,7 +6,7 @@
 package Model.Statement;
 
 import Model.Lexeme;
-import Model.Statement.Structure.SintacticTypes;
+import Model.Statement.Structure.SyntacticTypes;
 import Model.Statement.Structure.Statement;
 import java.util.ArrayList;
 
@@ -16,9 +16,9 @@ import java.util.ArrayList;
  */
 public class ExpressionStatement extends Statement {
 
-    private boolean numeric, character;
+    private boolean numeric, character, relational;
     private int state;
-    private Statement numericExpression, characterExpression;
+    private Statement numericExpression, characterExpression, relationalExpression;
 
     public static ArrayList<String> typesLexemes = new ArrayList<>();
 
@@ -33,8 +33,8 @@ public class ExpressionStatement extends Statement {
     }
 
     @Override
-    public boolean analyze(Lexeme lexeme) {
-        if (NumericExpressionStatement.lexemesIs(lexeme.getType()) && !this.character) {
+    public boolean analyze(Lexeme lexeme) throws Exception {
+        if (NumericExpressionStatement.lexemesIs(lexeme.getType()) && !this.character && !this.relational) {
             if (this.numericExpression.analyze(lexeme)) {
                 this.characterExpression = null;
                 this.numeric = true;
@@ -44,7 +44,7 @@ public class ExpressionStatement extends Statement {
                 return true;
             }
         }
-        if (CharacterExpressionStatement.lexemesIs(lexeme.getType()) && !this.numeric) {
+        if (CharacterExpressionStatement.lexemesIs(lexeme.getType()) && !this.numeric && !this.relational) {
             if (this.characterExpression.analyze(lexeme)) {
                 this.numericExpression = null;
                 this.character = true;
@@ -52,6 +52,31 @@ public class ExpressionStatement extends Statement {
                     this.state = 2;
                 }
                 return true;
+            }
+        }
+        if (RelationalExpressionStatement.lexemesIs(lexeme.getType()) || this.relational) {
+            if (!this.relational) {
+                this.relationalExpression = new RelationalExpressionStatement(this.root, 1);
+                this.relational = true;
+                if (this.numericExpression.getStatement() != null) {
+                    this.numericExpression.setParent(this.relationalExpression);
+                    this.relationalExpression.addChild(this.numericExpression);
+                } else if (this.characterExpression.getStatement() != null) {
+                    this.characterExpression.setParent(this.relationalExpression);
+                    this.relationalExpression.addChild(this.characterExpression);
+                } else {
+                    return false;
+                }
+                return this.relationalExpression.analyze(lexeme);
+            } else {
+                if (this.relationalExpression.analyze(lexeme)) {
+                    if (this.relationalExpression.getStatement() != null) {
+                        this.state = 3;
+                        return true;
+                    }
+                    return true;
+                }
+                return false;
             }
         }
         return false;
@@ -64,24 +89,17 @@ public class ExpressionStatement extends Statement {
                 return this.numericExpression.getStatement();
             case 2:
                 return this.characterExpression.getStatement();
+            case 3:
+                return this.relationalExpression.getStatement();
             default:
                 return null;
         }
     }
 
-    public static boolean lexemeIsNumeric(String type) {
+    public static boolean lexemeIs(String type) {
         for (String typeLexeme : NumericExpressionStatement.typesLexemes) {
             ExpressionStatement.typesLexemes.add(typeLexeme);
         }
-        for (String typeLexeme : ExpressionStatement.typesLexemes) {
-            if (type.equals(typeLexeme)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public static boolean lexemeIsCharacter(String type){
         for (String typeLexeme : CharacterExpressionStatement.typesLexemes) {
             ExpressionStatement.typesLexemes.add(typeLexeme);
         }
@@ -95,6 +113,6 @@ public class ExpressionStatement extends Statement {
 
     @Override
     public String toString() {
-        return SintacticTypes.EXPRESSION;
+        return SyntacticTypes.EXPRESSION;
     }
 }

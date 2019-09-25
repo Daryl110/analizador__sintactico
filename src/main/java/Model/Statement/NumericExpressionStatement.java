@@ -7,7 +7,7 @@ package Model.Statement;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
-import Model.Statement.Structure.SintacticTypes;
+import Model.Statement.Structure.SyntacticTypes;
 import Model.Statement.Structure.Statement;
 import java.util.ArrayList;
 
@@ -23,30 +23,32 @@ public class NumericExpressionStatement extends Statement {
 
     public static String[] typesLexemes = {
         LexemeTypes.NUMBERS,
+        LexemeTypes.IDENTIFIERS,
         LexemeTypes.OPEN_PARENTHESIS,
         LexemeTypes.ARITHMETIC_OPERATORS,
-        LexemeTypes.CLOSE_PARENTHESIS
+        LexemeTypes.CLOSE_PARENTHESIS,
+        LexemeTypes.DELIMITERS
     };
 
     public NumericExpressionStatement(Statement root) {
         this.root = root;
         this.state = 0;
-        this.STATE_TOTAL = 3;
+        this.STATE_TOTAL = 4;
         this.childs = new ArrayList<>();
         this.openedParenthesis = 0;
     }
 
     @Override
-    public boolean analyze(Lexeme lexeme) {
+    public boolean analyze(Lexeme lexeme) throws Exception{
         switch (this.state) {
             case 0:
                 if (lexeme.getType().equals(LexemeTypes.OPEN_PARENTHESIS)) {
                     this.openedParenthesis++;
                     this.childs.add(lexeme);
-                    this.state = 0;
                     return true;
                 }
-                if (lexeme.getType().equals(LexemeTypes.NUMBERS)) {
+                if (lexeme.getType().equals(LexemeTypes.NUMBERS)
+                        || lexeme.getType().equals(LexemeTypes.IDENTIFIERS)) {
                     this.state = 1;
                     this.childs.add(lexeme);
                     return true;
@@ -81,11 +83,16 @@ public class NumericExpressionStatement extends Statement {
             case 2:
                 if (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
                     this.openedParenthesis--;
-                    this.state = 3;
+                    if (!((Lexeme)this.childs.get(this.childs.size()-1).getStatement()).getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)) {
+                        this.state = 3;
+                    }else{
+                        throw new Exception("[Error] : [ row: "+lexeme.getRow()+" - column: "+lexeme.getColumn());
+                    }
                     this.childs.add(lexeme);
                     return true;
                 }
-                if (lexeme.getType().equals(LexemeTypes.NUMBERS)) {
+                if (lexeme.getType().equals(LexemeTypes.NUMBERS)
+                        || lexeme.getType().equals(LexemeTypes.IDENTIFIERS)) {
                     if (this.openedParenthesis == 0) {
                         this.state = 3;
                     } else {
@@ -102,6 +109,11 @@ public class NumericExpressionStatement extends Statement {
                 }
                 return false;
             case 3:
+                if (lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
+                    this.state = 4;
+                    this.childs.add(lexeme);
+                    return true;
+                }
                 if (lexeme.getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)
                         || lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
                     this.state = 1;
@@ -134,6 +146,6 @@ public class NumericExpressionStatement extends Statement {
 
     @Override
     public String toString() {
-        return SintacticTypes.NUMERIC_EXPRESSION;
+        return SyntacticTypes.NUMERIC_EXPRESSION;
     }
 }

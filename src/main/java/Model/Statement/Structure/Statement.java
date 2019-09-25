@@ -27,10 +27,14 @@ public abstract class Statement implements TreeNode{
      */
     protected List<Statement> childs;
     
-    public abstract boolean analyze(Lexeme lexeme);
+    public abstract boolean analyze(Lexeme lexeme) throws Exception;
     public abstract Statement getStatement();
     @Override
     public abstract String toString();
+    
+    public void setParent(Statement root){
+        this.root = root;
+    }
     
     public void addChild(Statement child){
         this.childs.add(child);
@@ -77,7 +81,7 @@ public abstract class Statement implements TreeNode{
     /**
      * @param childs the hijos to set
      */
-    public void setHijos(List<Statement> childs) {
+    public void setChilds(List<Statement> childs) {
         this.childs = childs;
     }
 

@@ -22,52 +22,30 @@ public class SyntacticAnalizer {
         this.lexemes = lexemes;
     }
 
-    public Statement analyze() {
+    public Statement analyze() throws Exception {
         Statement statement = new CompilationUnitStatement();
 
         for (int i = 0; i < this.lexemes.size(); i++) {
             Lexeme lexeme = this.lexemes.get(i);
-            if (ExpressionStatement.lexemeIsNumeric(lexeme.getType())) {
+            if (ExpressionStatement.lexemeIs(lexeme.getType())) {
                 Statement expression = new ExpressionStatement(statement);
-                if (expression.analyze(this.lexemes.get(i))) {
-                    Statement exp = null;
-                    int aux = i;
-                    for (int j = i + 1; j < this.lexemes.size(); j++) {
-                        if (expression.analyze(this.lexemes.get(j))) {
-                            exp = expression.getStatement();
-                            if (exp != null) {
-                                i = j;
-                            }
-                        } else {
-                            break;
+                if (expression.analyze(lexeme)) {
+                    if (expression.getStatement() != null) {
+                        statement.addChild(expression.getStatement());
+                        if (true) {
+                            //si sigue un operador relaciona
                         }
-                    }
-                    if (exp != null) {
-                        statement.addChild(exp);
-                        continue;
-                    }else{
-                        i = aux;
-                    }
-                }
-            }
-            if (ExpressionStatement.lexemeIsCharacter(lexeme.getType())) {
-                Statement expression = new ExpressionStatement(statement);
-                if (expression.analyze(this.lexemes.get(i))) {
-                    Statement exp = null;
-                    for (int j = i + 1; j < this.lexemes.size(); j++) {
-                        if (expression.analyze(this.lexemes.get(j))) {
-                            exp = expression.getStatement();
-                            if (exp != null) {
-                                i = j;
-                                break;
+                    } else {
+                        for (int j = i + 1; j < this.lexemes.size(); j++) {
+                            lexeme = this.lexemes.get(j);
+                            boolean bool = expression.analyze(lexeme);
+                            if (!bool || (bool && j == this.lexemes.size()-1)) {
+                                if (expression.getStatement() != null) {
+                                    statement.addChild(expression.getStatement());
+                                    i = j - 1;
+                                }
                             }
-                        } else {
-                            break;
                         }
-                    }
-                    if (exp != null) {
-                        statement.addChild(exp);
-                        continue;
                     }
                 }
             }

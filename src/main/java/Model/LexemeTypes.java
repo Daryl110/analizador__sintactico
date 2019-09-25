@@ -18,8 +18,8 @@ public class LexemeTypes {
     public static String DATA_TYPE = "Data Type";
     public static String DELIMITERS = "Delimiters";
     public static String GROUPING_SYMBOLS = "Grouping Symbols";
-    public static String OPEN_PARENTHESIS = "Open Parenthesis";
-    public static String CLOSE_PARENTHESIS = "Close Parenthesis";
+    public static String OPEN_PARENTHESIS = "Open Parenthesis"; // agregado
+    public static String CLOSE_PARENTHESIS = "Close Parenthesis"; // agregado
     public static String ARITHMETIC_OPERATORS = "Arithmetic Operators";
     public static String LOGICAL_OPERATORS = "Logical Operators";
     public static String RELATIONAL_OPERATORS = "Relational Operators";
@@ -28,7 +28,6 @@ public class LexemeTypes {
     public static String COMMENTS = "Comments";
     public static String STRINGS = "Strings";
     public static String CHAR = "Character"; // agregado
-    public static String SINGLE_QUOTE = "Single Quote"; // agregado
     public static String IDENTIFIERS = "Identirfiers";
     public static String NUMBERS = "Numbers";
     public static String ERRORS = "Errors";

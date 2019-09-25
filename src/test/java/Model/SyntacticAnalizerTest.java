@@ -5,7 +5,6 @@
  */
 package Model;
 
-import Model.Statement.Structure.Statement;
 import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -22,9 +21,8 @@ public class SyntacticAnalizerTest {
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
-        lexemes.add(new Lexeme(0, 0, "'", LexemeTypes.SINGLE_QUOTE));
-        lexemes.add(new Lexeme(0, 0, "d", LexemeTypes.CHAR));
-        lexemes.add(new Lexeme(0, 0, "'", LexemeTypes.SINGLE_QUOTE));
+        lexemes.add(new Lexeme(0, 0, "'d'", LexemeTypes.CHAR));
+        lexemes.add(new Lexeme(0, 0, "d", LexemeTypes.IDENTIFIERS));
         
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
@@ -48,7 +46,15 @@ public class SyntacticAnalizerTest {
         lexemes.add(new Lexeme(0, 0, "7", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         
-        assertNotEquals(null, new SyntacticAnalizer(lexemes).analyze());
+        int cant = 0;
+        
+        try {
+            cant = new SyntacticAnalizer(lexemes).analyze().getChildCount();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        assertEquals(3, cant);
     }
     
 }

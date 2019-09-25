@@ -6,7 +6,7 @@
 package Model.Statement;
 
 import Model.Lexeme;
-import Model.Statement.Structure.SintacticTypes;
+import Model.Statement.Structure.SyntacticTypes;
 import Model.Statement.Structure.Statement;
 import java.util.ArrayList;
 
@@ -33,7 +33,7 @@ public class CompilationUnitStatement extends Statement{
 
     @Override
     public String toString() {
-        return SintacticTypes.COMPILATION_UNIT;
+        return SyntacticTypes.COMPILATION_UNIT;
     }
     
 }
