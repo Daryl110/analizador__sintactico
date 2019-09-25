@@ -22,7 +22,6 @@ public class SyntacticAnalizerTest {
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
         lexemes.add(new Lexeme(0, 0, "'d'", LexemeTypes.CHAR));
-        lexemes.add(new Lexeme(0, 0, "d", LexemeTypes.IDENTIFIERS));
         
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
@@ -45,6 +44,7 @@ public class SyntacticAnalizerTest {
         lexemes.add(new Lexeme(0, 0, "-", LexemeTypes.ARITHMETIC_OPERATORS));
         lexemes.add(new Lexeme(0, 0, "7", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
         
         int cant = 0;
         
@@ -54,7 +54,7 @@ public class SyntacticAnalizerTest {
             System.out.println(e.getMessage());
         }
         
-        assertEquals(3, cant);
+        assertEquals(2, cant);
     }
     
 }
