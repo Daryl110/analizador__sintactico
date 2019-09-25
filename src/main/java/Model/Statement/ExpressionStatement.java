@@ -20,8 +20,6 @@ public class ExpressionStatement extends Statement {
     private int state;
     private Statement numericExpression, characterExpression, relationalExpression;
 
-    public static ArrayList<String> typesLexemes = new ArrayList<>();
-
     public ExpressionStatement(Statement root) {
         this.root = root;
         this.state = 0;
@@ -58,12 +56,12 @@ public class ExpressionStatement extends Statement {
             if (!this.relational) {
                 this.relationalExpression = new RelationalExpressionStatement(this.root, 1);
                 this.relational = true;
-                if (this.numericExpression.getStatement() != null) {
+                if (this.numericExpression != null) {
                     this.numericExpression.setParent(this.relationalExpression);
-                    this.relationalExpression.addChild(this.numericExpression);
-                } else if (this.characterExpression.getStatement() != null) {
+                    this.relationalExpression.addChild(this.numericExpression.getStatement());
+                } else if (this.characterExpression != null) {
                     this.characterExpression.setParent(this.relationalExpression);
-                    this.relationalExpression.addChild(this.characterExpression);
+                    this.relationalExpression.addChild(this.characterExpression.getStatement());
                 } else {
                     return false;
                 }
@@ -97,18 +95,11 @@ public class ExpressionStatement extends Statement {
     }
 
     public static boolean lexemeIs(String type) {
-        for (String typeLexeme : NumericExpressionStatement.typesLexemes) {
-            ExpressionStatement.typesLexemes.add(typeLexeme);
-        }
-        for (String typeLexeme : CharacterExpressionStatement.typesLexemes) {
-            ExpressionStatement.typesLexemes.add(typeLexeme);
-        }
-        for (String typeLexeme : ExpressionStatement.typesLexemes) {
-            if (type.equals(typeLexeme)) {
-                return true;
-            }
-        }
-        return false;
+        return NumericExpressionStatement.lexemesIs(type) || CharacterExpressionStatement.lexemesIs(type);
+    }
+    
+    public static boolean lexemeIsRelational(String type) {
+        return RelationalExpressionStatement.lexemesIs(type);
     }
 
     @Override
