@@ -37,5 +37,8 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
+      # checkstyle comprobation
+      - run: mvn checkstyle:check
+
       # run tests!
       - run: mvn integration-test
