@@ -37,89 +37,32 @@ public class LexemeController {
     public DefaultTableModel updateLexemes(String ip, int port) throws IOException, InterruptedException, ParseException, Exception {
         this.lexemes = new ArrayList<>();
         
-        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "b", LexemeTypes.IDENTIFIERS));
-        lexemes.add(new Lexeme(0, 0, "-", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "6", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "*", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, "+", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "6", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "/", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, "*", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, "-", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "x", LexemeTypes.IDENTIFIERS));
-        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
-        
-        this.lexemes.add(new Lexeme(0, 0, "<=", LexemeTypes.RELATIONAL_OPERATORS));
-        
-        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "b", LexemeTypes.IDENTIFIERS));
-        lexemes.add(new Lexeme(0, 0, "-", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "6", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "*", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, "+", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "6", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
-        
-        this.lexemes.add(new Lexeme(0, 0, "<=", LexemeTypes.RELATIONAL_OPERATORS));
-        
-        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "b", LexemeTypes.IDENTIFIERS));
-        lexemes.add(new Lexeme(0, 0, "-", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "6", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "*", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, "+", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "6", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
-        
         DefaultTableModel model = new DefaultTableModel();
 
         model.addColumn("Token");
         model.addColumn("Type");
         model.addColumn("Positions");
 
-//        HttpClient httpClient = HttpClient.newBuilder()
-//                .version(HttpClient.Version.HTTP_2)
-//                .build();
-//
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .uri(URI.create("http://"+ip+":"+port+"/analizador_lexico/lexemes"))
-//                .GET()
-//                .build();
-//
-//        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-//
-//        JSONArray array = (JSONArray) (new JSONParser().parse(response.body()));
-//
-//        Gson gson = new Gson();
-//        
-//        array.stream().map((obj) -> (JSONObject) obj).map((jsonLexeme) -> gson.fromJson(jsonLexeme.toString(), Lexeme.class)).forEachOrdered((lexeme) -> {
-//            this.lexemes.add((Lexeme) lexeme);
-//        });
-//
-//        Logger.getLogger(LexemeController.class.getName()).log(Level.INFO, "Response body: {0}", this.lexemes.toString());
+        HttpClient httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .build();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://"+ip+":"+port+"/analizador_lexico/lexemes"))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        JSONArray array = (JSONArray) (new JSONParser().parse(response.body()));
+
+        Gson gson = new Gson();
+        
+        array.stream().map((obj) -> (JSONObject) obj).map((jsonLexeme) -> gson.fromJson(jsonLexeme.toString(), Lexeme.class)).forEachOrdered((lexeme) -> {
+            this.lexemes.add((Lexeme) lexeme);
+        });
+
+        Logger.getLogger(LexemeController.class.getName()).log(Level.INFO, "Response body: {0}", this.lexemes.toString());
         
         this.lexemes.forEach((lexeme) -> {
             model.addRow(new Object[]{

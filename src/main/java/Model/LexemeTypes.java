@@ -12,14 +12,18 @@ package Model;
 public class LexemeTypes {
     
     public static String FUNCTIONS = "Function";
+    public static String CHAR = "Character";
     public static String OTHERS = "Other";
     public static String ITERATIVE_CONTROL_STRUCTURE = "Iterative Control Structure";
     public static String SELECTIVE_CONTROL_STRUCTURE = "Selective Control Structure";
     public static String DATA_TYPE = "Data Type";
     public static String DELIMITERS = "Delimiters";
-    public static String GROUPING_SYMBOLS = "Grouping Symbols";
-    public static String OPEN_PARENTHESIS = "Open Parenthesis"; // agregado
-    public static String CLOSE_PARENTHESIS = "Close Parenthesis"; // agregado
+    public static String OPEN_PARENTHESIS = "Open Parenthesis";
+    public static String CLOSE_PARENTHESIS = "Close Parenthesis";
+    public static String OPEN_BRACKETS = "Open Brackets";
+    public static String CLOSE_BRACKETS = "Close Brackets";
+    public static String OPEN_BRACES = "Open Braces";
+    public static String CLOSE_BRACES = "Close Braces";
     public static String ARITHMETIC_OPERATORS = "Arithmetic Operators";
     public static String LOGICAL_OPERATORS = "Logical Operators";
     public static String RELATIONAL_OPERATORS = "Relational Operators";
@@ -27,7 +31,6 @@ public class LexemeTypes {
     public static String ASSIGNMENT_OPERATORS = "Assignment Operators";
     public static String COMMENTS = "Comments";
     public static String STRINGS = "Strings";
-    public static String CHAR = "Character"; // agregado
     public static String IDENTIFIERS = "Identirfiers";
     public static String NUMBERS = "Numbers";
     public static String ERRORS = "Errors";

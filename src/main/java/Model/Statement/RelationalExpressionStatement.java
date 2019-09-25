@@ -77,7 +77,11 @@ public class RelationalExpressionStatement extends Statement {
                 return false;
             default:
                 this.state = 1;
-                return this.analyze(lexeme);
+                if(!this.analyze(lexeme)){
+                    this.state = 3;
+                    return false;
+                }
+                return true;
         }
     }
 
