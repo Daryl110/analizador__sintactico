@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  *
  * @author Daryl Ospina
  */
-public class RelationalExpressionStatementTest {
+public class LogicalExpressionStatementTest {
     
     @Test
     public void testAnalyze() {
@@ -24,13 +24,14 @@ public class RelationalExpressionStatementTest {
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, "true", LexemeTypes.OTHERS));
+        lexemes.add(new Lexeme(0, 0, "&&", LexemeTypes.LOGICAL_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "a", LexemeTypes.IDENTIFIERS));
         lexemes.add(new Lexeme(0, 0, "==", LexemeTypes.RELATIONAL_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, "52", LexemeTypes.NUMBERS));
         
-        RelationalExpressionStatement relationalExpressionStatement = new RelationalExpressionStatement(null, new TokensFlow(lexemes));
+        LogicalExpressionStatement logicalExpressionStatement = new LogicalExpressionStatement(null, new TokensFlow(lexemes));
         
-        assertEquals(3, relationalExpressionStatement.analyze().getChildCount());
+        assertEquals(3, logicalExpressionStatement.analyze().getChildCount());
     }
-    
 }

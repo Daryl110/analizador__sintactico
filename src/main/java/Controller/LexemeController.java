@@ -6,7 +6,6 @@
 package Controller;
 
 import Model.Lexeme;
-import Model.LexemeTypes;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.URI;

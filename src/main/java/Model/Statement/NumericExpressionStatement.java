@@ -7,8 +7,9 @@ package Model.Statement;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
-import Model.Statement.Structure.SyntacticTypes;
 import Model.Statement.Structure.Statement;
+import Model.Statement.Structure.SyntacticTypes;
+import Model.TokensFlow;
 import java.util.ArrayList;
 
 /**
@@ -17,135 +18,86 @@ import java.util.ArrayList;
  */
 public class NumericExpressionStatement extends Statement {
 
-    private int state;
-    private final int STATE_TOTAL;
     private int openedParenthesis;
+    private Lexeme lexeme;
+    private final TokensFlow tokensFlow;
 
-    public static String[] typesLexemes = {
-        LexemeTypes.NUMBERS,
-        LexemeTypes.IDENTIFIERS,
-        LexemeTypes.OPEN_PARENTHESIS,
-        LexemeTypes.ARITHMETIC_OPERATORS,
-        LexemeTypes.CLOSE_PARENTHESIS,
-        LexemeTypes.DELIMITERS
-    };
-
-    public NumericExpressionStatement(Statement root) {
-        this.root = root;
-        this.state = 0;
-        this.STATE_TOTAL = 4;
+    public NumericExpressionStatement(Statement root, TokensFlow tokensFlow) {
         this.childs = new ArrayList<>();
         this.openedParenthesis = 0;
-    }
-
-    @Override
-    public boolean analyze(Lexeme lexeme) throws Exception{
-        switch (this.state) {
-            case 0:
-                if (lexeme.getType().equals(LexemeTypes.OPEN_PARENTHESIS)) {
-                    this.openedParenthesis++;
-                    this.childs.add(lexeme);
-                    return true;
-                }
-                if (lexeme.getType().equals(LexemeTypes.NUMBERS)
-                        || lexeme.getType().equals(LexemeTypes.IDENTIFIERS)) {
-                    this.state = 1;
-                    this.childs.add(lexeme);
-                    return true;
-                }
-                if (this.openedParenthesis != 0) {
-                    if (lexeme.getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)
-                            || lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
-                        this.state = 1;
-                        return this.analyze(lexeme);
-                    }else{
-                        return false;
-                    }
-                }
-                return false;
-            case 1:
-                if (lexeme.getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)) {
-                    this.state = 2;
-                    this.childs.add(lexeme);
-                    return true;
-                }
-                if (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
-                    this.openedParenthesis--;
-                    if (this.openedParenthesis == 0) {
-                        this.state = 3;
-                    } else {
-                        this.state = 1;
-                    }
-                    this.childs.add(lexeme);
-                    return true;
-                }
-                return false;
-            case 2:
-                if (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
-                    this.openedParenthesis--;
-                    if (!((Lexeme)this.childs.get(this.childs.size()-1).getStatement()).getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)) {
-                        this.state = 3;
-                    }else{
-                        throw new Exception("[Error] : [ row: "+lexeme.getRow()+" - column: "+lexeme.getColumn());
-                    }
-                    this.childs.add(lexeme);
-                    return true;
-                }
-                if (lexeme.getType().equals(LexemeTypes.NUMBERS)
-                        || lexeme.getType().equals(LexemeTypes.IDENTIFIERS)) {
-                    if (this.openedParenthesis == 0) {
-                        this.state = 3;
-                    } else {
-                        this.state = 1;
-                    }
-                    this.childs.add(lexeme);
-                    return true;
-                }
-                if (lexeme.getType().equals(LexemeTypes.OPEN_PARENTHESIS)) {
-                    this.openedParenthesis++;
-                    this.state = 0;
-                    this.childs.add(lexeme);
-                    return true;
-                }
-                return false;
-            case 3:
-                if (lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
-                    this.state = 4;
-                    this.childs.add(lexeme);
-                    return true;
-                }
-                if (lexeme.getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)
-                        || lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
-                    this.state = 1;
-                    return this.analyze(lexeme);
-                } else {
-                    this.state = 0;
-                    return this.analyze(lexeme);
-                }
-            default:
-                return false;
-        }
-    }
-
-    @Override
-    public Statement getStatement() {
-        if (this.state == this.STATE_TOTAL) {
-            return this;
-        }
-        return null;
-    }
-
-    public static boolean lexemesIs(String type) {
-        for (String typeLexeme : NumericExpressionStatement.typesLexemes) {
-            if (type.equals(typeLexeme)) {
-                return true;
-            }
-        }
-        return false;
+        this.lexeme = tokensFlow.getCurrentToken();
+        this.tokensFlow = tokensFlow;
+        this.tokensFlow.savePositionCurrent();
     }
 
     @Override
     public String toString() {
-        return SyntacticTypes.NUMERIC_EXPRESSION;
+        return SyntacticTypes.NUMERIC_EXPRESSION_STATEMENT;
     }
+
+    @Override
+    public Statement analyze() {
+
+        if (this.lexeme.getType().equals(LexemeTypes.OPEN_PARENTHESIS)) {
+
+            this.openedParenthesis++;
+            this.childs.add(this.lexeme);
+            this.lexeme = this.tokensFlow.move();
+        }
+        if (this.lexeme.getType().equals(LexemeTypes.NUMBERS)
+                || this.lexeme.getType().equals(LexemeTypes.IDENTIFIERS)) {
+
+            this.childs.add(this.lexeme);
+            this.lexeme = this.tokensFlow.move();
+
+            if (this.lexeme != null && this.lexeme.getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)) {
+                this.childs.add(this.lexeme);
+                this.lexeme = this.tokensFlow.move();
+
+                return this.analyze();
+
+            } else if (this.openedParenthesis != 0 && this.lexeme != null) {
+                if (this.lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
+
+                    this.openedParenthesis--;
+                    this.childs.add(this.lexeme);
+                    this.lexeme = this.tokensFlow.move();
+                    
+                    if (this.lexeme != null && !(this.lexeme.getType().equals(LexemeTypes.DELIMITERS)
+                            || this.lexeme.getType().equals(LexemeTypes.OPEN_BRACES))
+                            && this.lexeme.getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)) {
+
+                        this.childs.add(this.lexeme);
+                        this.lexeme = this.tokensFlow.move();
+                        
+                        return this.analyze();
+
+                    } else {
+                        if (this.openedParenthesis == 0) {
+                            return this;
+                        }
+                        this.tokensFlow.backTrack();
+                        return null;
+                    }
+                } else {
+                    this.tokensFlow.backTrack();
+                    return null;
+                }
+            } else {
+                if (this.openedParenthesis == 0) {
+                    return this;
+                }
+                this.tokensFlow.backTrack();
+                return null;
+            }
+        } else {
+            this.tokensFlow.backTrack();
+            return null;
+        }
+    }
+    
+    public int getPositionTokensFlow(){
+        return this.tokensFlow.getPositionCurrent();
+    }
+
 }
