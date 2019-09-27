@@ -16,15 +16,15 @@ import java.util.ArrayList;
  *
  * @author Daryl Ospina
  */
-public class RelationalExpressionStatement extends Statement {
+public class LogicalExpressionStatement extends Statement {
 
+    private RelationalExpressionStatement relational;
     private int openedParenthesis;
-    private NumericExpressionStatement numeric;
     private Lexeme lexeme;
-    private final TokensFlow tokensFlow;
     private boolean operation;
+    private final TokensFlow tokensFlow;
 
-    public RelationalExpressionStatement(Statement root, TokensFlow tokensFlow) {
+    public LogicalExpressionStatement(Statement root, TokensFlow tokensFlow) {
         this.childs = new ArrayList<>();
         this.openedParenthesis = 0;
         this.lexeme = tokensFlow.getCurrentToken();
@@ -35,7 +35,7 @@ public class RelationalExpressionStatement extends Statement {
 
     @Override
     public String toString() {
-        return SyntacticTypes.RELATIONAL_EXPRESSION_STATEMENT;
+        return SyntacticTypes.LOGICAL_EXPRESSION_STATEMENT;
     }
 
     @Override
@@ -47,19 +47,26 @@ public class RelationalExpressionStatement extends Statement {
             this.childs.add(this.lexeme);
             this.lexeme = this.tokensFlow.move();
         }
-        this.numeric = new NumericExpressionStatement(this, this.tokensFlow);
-        if (this.numeric.analyze() != null) {
+        this.relational = new RelationalExpressionStatement(this, this.tokensFlow);
+        this.relational = (RelationalExpressionStatement) this.relational.analyze();
+        if (this.relational != null || (this.lexeme.getType().equals(LexemeTypes.OTHERS)
+                && (this.lexeme.getWord().equals("true") || this.lexeme.getWord().equals("false")))) {
 
-            this.tokensFlow.moveTo(this.numeric.getPositionTokensFlow());
-            this.childs.add(this.numeric);
-            this.lexeme = this.tokensFlow.getCurrentToken();
+            if (this.relational != null) {
+                this.tokensFlow.moveTo(this.relational.getPositionTokensFlow());
+                this.childs.add(this.relational);
+                this.lexeme = this.tokensFlow.getCurrentToken();
+            } else {
+                this.childs.add(lexeme);
+                this.lexeme = this.tokensFlow.move();
+            }
 
-            if (this.lexeme != null && this.lexeme.getType().equals(LexemeTypes.RELATIONAL_OPERATORS)) {
+            if (this.lexeme != null && this.lexeme.getType().equals(LexemeTypes.LOGICAL_OPERATORS)) {
 
                 this.childs.add(this.lexeme);
                 this.lexeme = this.tokensFlow.move();
                 this.operation = true;
-
+                
                 return this.analyze();
 
             } else if (this.openedParenthesis != 0 && this.lexeme != null) {
@@ -71,16 +78,16 @@ public class RelationalExpressionStatement extends Statement {
 
                     if (this.lexeme != null && !(this.lexeme.getType().equals(LexemeTypes.DELIMITERS)
                             || this.lexeme.getType().equals(LexemeTypes.OPEN_BRACES))
-                            && this.lexeme.getType().equals(LexemeTypes.RELATIONAL_OPERATORS)) {
+                            && this.lexeme.getType().equals(LexemeTypes.LOGICAL_OPERATORS)) {
 
                         this.childs.add(this.lexeme);
                         this.lexeme = this.tokensFlow.move();
                         this.operation = true;
-
+                        
                         return this.analyze();
 
                     } else {
-                        if (this.openedParenthesis == 0 || operation) {
+                        if (this.openedParenthesis == 0 && operation) {
                             return this;
                         }
                         this.tokensFlow.backTrack();
@@ -105,7 +112,7 @@ public class RelationalExpressionStatement extends Statement {
 
     @Override
     public int getPositionTokensFlow() {
-        return this.tokensFlow.getPositionCurrent();
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

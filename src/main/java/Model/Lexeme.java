@@ -63,13 +63,13 @@ public class Lexeme extends Statement{
     }
 
     @Override
-    public boolean analyze(Lexeme lexeme) {
-        return lexeme.getType().equals(this.type) && lexeme.word.equals(this.word);
+    public Statement analyze() {
+        return this;
     }
 
     @Override
-    public Statement getStatement() {
-        return this;
+    public int getPositionTokensFlow() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

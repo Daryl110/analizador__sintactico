@@ -11,9 +11,7 @@ package Model.Statement.Structure;
  */
 public class SyntacticTypes {
     
-    public static String COMPILATION_UNIT = "Compilation Unit";
-    public static String EXPRESSION = "Expression";
-    public static String CHAR_EXPRESSION = "Character Expression";
-    public static String NUMERIC_EXPRESSION = "Numeric Expression";
-    public static String RELATIONAL_EXPRESSION = "Relational Expression";
+    public static final String NUMERIC_EXPRESSION_STATEMENT = "Numeric Expression";
+    public static final String RELATIONAL_EXPRESSION_STATEMENT = "Relational Expression";
+    public static final String LOGICAL_EXPRESSION_STATEMENT = "Logical Expression";
 }

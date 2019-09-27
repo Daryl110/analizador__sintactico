@@ -6,6 +6,7 @@
 package Model.Statement.Structure;
 
 import Model.Lexeme;
+import Model.TokensFlow;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
@@ -27,8 +28,8 @@ public abstract class Statement implements TreeNode{
      */
     protected List<Statement> childs;
     
-    public abstract boolean analyze(Lexeme lexeme) throws Exception;
-    public abstract Statement getStatement();
+    public abstract Statement analyze();
+    public abstract int getPositionTokensFlow();
     @Override
     public abstract String toString();
     
@@ -84,5 +85,4 @@ public abstract class Statement implements TreeNode{
     public void setChilds(List<Statement> childs) {
         this.childs = childs;
     }
-
 }

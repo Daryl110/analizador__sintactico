@@ -7,11 +7,11 @@ package Model.Statement;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
+import Model.Statement.Structure.SyntacticTypes;
+import Model.TokensFlow;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.junit.Assert;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -19,50 +19,21 @@ import org.junit.Test;
  */
 public class ExpressionStatementTest {
     
-    static final Logger log = Logger.getLogger(ExpressionStatementTest.class.getName());
-    
     @Test
     public void testAnalyze() {
-        log.info("Expression Analyze");
-        log.info("Expression to analyze 'a' o ((5-6)*(5+6))/5*(5-7)");
+        System.out.println("analyze");
+        
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
-        // expresion a validar 'a' o ((5-6)*(5+6))/5*(5-7)
-
-        lexemes.add(new Lexeme(0, 0, "'a'", LexemeTypes.CHAR));
+        lexemes.add(new Lexeme(0, 0, "true", LexemeTypes.OTHERS));
+        lexemes.add(new Lexeme(0, 0, "&&", LexemeTypes.LOGICAL_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "a", LexemeTypes.IDENTIFIERS));
+        lexemes.add(new Lexeme(0, 0, "==", LexemeTypes.RELATIONAL_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "52", LexemeTypes.NUMBERS));
         
-//        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-//        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-//        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-//        lexemes.add(new Lexeme(0, 0, "-", LexemeTypes.ARITHMETIC_OPERATORS));
-//        lexemes.add(new Lexeme(0, 0, "6", LexemeTypes.NUMBERS));
-//        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-//        lexemes.add(new Lexeme(0, 0, "*", LexemeTypes.ARITHMETIC_OPERATORS));
-//        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-//        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-//        lexemes.add(new Lexeme(0, 0, "+", LexemeTypes.ARITHMETIC_OPERATORS));
-//        lexemes.add(new Lexeme(0, 0, "6", LexemeTypes.NUMBERS));
-//        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-//        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-//        lexemes.add(new Lexeme(0, 0, "/", LexemeTypes.ARITHMETIC_OPERATORS));
-//        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-//        lexemes.add(new Lexeme(0, 0, "*", LexemeTypes.ARITHMETIC_OPERATORS));
-//        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-//        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-//        lexemes.add(new Lexeme(0, 0, "-", LexemeTypes.ARITHMETIC_OPERATORS));
-//        lexemes.add(new Lexeme(0, 0, "7", LexemeTypes.NUMBERS));
-//        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
-
-        ExpressionStatement instance = new ExpressionStatement(null);
+        ExpressionStatement expressionStatement = new ExpressionStatement(null, new TokensFlow(lexemes));
         
-        lexemes.forEach((lexeme) -> {
-            try {
-                instance.analyze(lexeme);
-            } catch (Exception ex) {
-                Logger.getLogger(ExpressionStatementTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        
-        Assert.assertNotEquals(null, instance.getStatement());
+        assertEquals(SyntacticTypes.LOGICAL_EXPRESSION_STATEMENT, expressionStatement.analyze().toString());
     }
+    
 }
