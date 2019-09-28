@@ -5,8 +5,6 @@
  */
 package Model.Statement.Structure;
 
-import Model.Lexeme;
-import Model.TokensFlow;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;

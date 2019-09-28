@@ -41,6 +41,10 @@ public class TokensFlow {
         return posCurrent;
     }
 
+    public int getPosTemp() {
+        return posTemp;
+    }
+
     public void savePositionCurrent() {
         posTemp = posCurrent;
     }

@@ -39,12 +39,14 @@ public class ExpressionStatement extends Statement{
         if (this.expression != null) {
             return this.expression;
         }
+        //this.tokensFlow.moveTo(this.tokensFlow.getPosTemp());
         this.tokensFlow.moveTo(0);
         this.expression = new RelationalExpressionStatement(this.root, this.tokensFlow);
         this.expression = this.expression.analyze();
         if (this.expression != null) {
             return this.expression;
         }
+        //this.tokensFlow.moveTo(this.tokensFlow.getPosTemp());
         this.tokensFlow.moveTo(0);
         this.expression = new NumericExpressionStatement(this.root, this.tokensFlow);
         this.expression = this.expression.analyze();

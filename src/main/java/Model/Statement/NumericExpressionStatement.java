@@ -96,6 +96,7 @@ public class NumericExpressionStatement extends Statement {
         }
     }
     
+    @Override
     public int getPositionTokensFlow(){
         return this.tokensFlow.getPositionCurrent();
     }
