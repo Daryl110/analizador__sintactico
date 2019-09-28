@@ -80,7 +80,7 @@ public class RelationalExpressionStatement extends Statement {
                         return this.analyze();
 
                     } else {
-                        if (this.openedParenthesis == 0 || operation) {
+                        if (this.openedParenthesis == 0 && operation) {
                             return this;
                         }
                         this.tokensFlow.backTrack();
