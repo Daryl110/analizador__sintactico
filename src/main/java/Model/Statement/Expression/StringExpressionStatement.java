@@ -10,7 +10,6 @@ import Model.LexemeTypes;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
-import java.util.ArrayList;
 
 /**
  *
@@ -19,19 +18,13 @@ import java.util.ArrayList;
 public class StringExpressionStatement extends Statement {
 
     private int openedParenthesis;
-    private int positionBack = -1;
 
     public StringExpressionStatement(Statement root) {
-        this.childs = new ArrayList<>();
-        this.openedParenthesis = 0;
-        this.root = root;
+        super(root);
     }
 
     public StringExpressionStatement(Statement root, int positionBack) {
-        this.childs = new ArrayList<>();
-        this.openedParenthesis = 0;
-        this.root = root;
-        this.positionBack = positionBack;
+        super(root, positionBack);
     }
 
     @Override

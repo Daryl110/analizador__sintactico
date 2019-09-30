@@ -17,17 +17,13 @@ import java.util.ArrayList;
 public class ExpressionStatement extends Statement {
 
     private Statement expression;
-    private int positionBack = -1;
 
     public ExpressionStatement(Statement root) {
-        this.root = root;
-        this.childs = new ArrayList<>();
+        super(root);
     }
     
     public ExpressionStatement(Statement root, int positionBack) {
-        this.root = root;
-        this.childs = new ArrayList<>();
-        this.positionBack = positionBack;
+        super(root, positionBack);
     }
 
     @Override

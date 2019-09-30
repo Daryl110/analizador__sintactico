@@ -26,22 +26,22 @@ public class ExpressionStatementTest {
         System.out.println("analyze");
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
-        
-        lexemes.add(new Lexeme(0, 0, "[", LexemeTypes.OPEN_BRACKETS));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, "==", LexemeTypes.RELATIONAL_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.STRINGS));
-        lexemes.add(new Lexeme(0, 0, ",", LexemeTypes.OTHERS));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, "==", LexemeTypes.RELATIONAL_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.STRINGS));
-        lexemes.add(new Lexeme(0, 0, "&&", LexemeTypes.LOGICAL_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, "==", LexemeTypes.RELATIONAL_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.STRINGS));
-        lexemes.add(new Lexeme(0, 0, "]", LexemeTypes.CLOSE_BRACKETS));
-        
         ExpressionStatement expressionStatement = new ExpressionStatement(null, 0);
+        
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "[", LexemeTypes.OPEN_BRACKETS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "==", LexemeTypes.RELATIONAL_OPERATORS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "5", LexemeTypes.STRINGS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, ",", LexemeTypes.OTHERS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "==", LexemeTypes.RELATIONAL_OPERATORS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "5", LexemeTypes.STRINGS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "&&", LexemeTypes.LOGICAL_OPERATORS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "==", LexemeTypes.RELATIONAL_OPERATORS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "5", LexemeTypes.STRINGS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "]", LexemeTypes.CLOSE_BRACKETS));
+        
         TokensFlow tokensFlow = new TokensFlow(lexemes);
         
         Statement statement = expressionStatement.analyze(tokensFlow,tokensFlow.getCurrentToken());

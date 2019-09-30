@@ -10,7 +10,6 @@ import Model.LexemeTypes;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
-import java.util.ArrayList;
 
 /**
  *
@@ -20,20 +19,18 @@ public class LogicalExpressionStatement extends Statement {
 
     private RelationalExpressionStatement relational;
     private int openedParenthesis;
-    private int positionBack = -1;
     private boolean operation;
 
     public LogicalExpressionStatement(Statement root) {
-        this.childs = new ArrayList<>();
+        super(root);
         this.openedParenthesis = 0;
         this.operation = false;
     }
 
     public LogicalExpressionStatement(Statement root, int positionBack) {
-        this.childs = new ArrayList<>();
+        super(root, positionBack);
         this.openedParenthesis = 0;
         this.operation = false;
-        this.positionBack = positionBack;
     }
 
     @Override

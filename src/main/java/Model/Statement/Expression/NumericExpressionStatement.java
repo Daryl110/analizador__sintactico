@@ -10,7 +10,6 @@ import Model.LexemeTypes;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
-import java.util.ArrayList;
 
 /**
  *
@@ -19,17 +18,15 @@ import java.util.ArrayList;
 public class NumericExpressionStatement extends Statement {
 
     private int openedParenthesis;
-    private int positionBack = -1;
 
     public NumericExpressionStatement(Statement root) {
-        this.childs = new ArrayList<>();
+        super(root);
         this.openedParenthesis = 0;
     }
 
     public NumericExpressionStatement(Statement root, int positionBack) {
-        this.childs = new ArrayList<>();
+        super(root, positionBack);
         this.openedParenthesis = 0;
-        this.positionBack = positionBack;
     }
 
     @Override
