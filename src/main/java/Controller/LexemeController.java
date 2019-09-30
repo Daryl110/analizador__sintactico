@@ -35,7 +35,7 @@ public class LexemeController {
 
     public DefaultTableModel updateLexemes(String ip, int port) throws IOException, InterruptedException, ParseException, Exception {
         this.lexemes = new ArrayList<>();
-        
+
         DefaultTableModel model = new DefaultTableModel();
 
         model.addColumn("Token");
@@ -62,12 +62,12 @@ public class LexemeController {
         });
 
         Logger.getLogger(LexemeController.class.getName()).log(Level.INFO, "Response body: {0}", this.lexemes.toString());
-        
+
         this.lexemes.forEach((lexeme) -> {
             model.addRow(new Object[]{
                 lexeme.getWord(),
                 lexeme.getType(),
-                "row: "+lexeme.getRow()+" - columns: "+lexeme.getColumn()
+                "row: " + lexeme.getRow() + " - columns: " + lexeme.getColumn()
             });
         });
 

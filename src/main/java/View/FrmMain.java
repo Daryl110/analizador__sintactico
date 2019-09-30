@@ -160,14 +160,14 @@ public class FrmMain extends javax.swing.JFrame {
     private void btnUpdateLexemesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateLexemesActionPerformed
         try {
             this.tblLexemes.setModel(this.ctlLexeme.updateLexemes(this.txtIp.getText(), Integer.parseInt(this.txtPuerto.getText())));
-            this.syntacticAnalizer = new SyntacticAnalizer(this.ctlLexeme.lexemes);
         }catch (Exception ex){
             Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, "{0}", ex.getMessage());
         }
     }//GEN-LAST:event_btnUpdateLexemesActionPerformed
 
     private void btnAnalizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizeActionPerformed
-        try{
+        try {
+            this.syntacticAnalizer = new SyntacticAnalizer(this.ctlLexeme.lexemes);
             this.treeDerivation.setModel(new DefaultTreeModel(this.syntacticAnalizer.analyze()));
         }catch(Exception e){
             System.out.println(e.getMessage());

@@ -63,13 +63,8 @@ public class Lexeme extends Statement{
     }
 
     @Override
-    public Statement analyze() {
+    public Statement analyze(TokensFlow tokensFlow, Lexeme lexeme) {
         return this;
-    }
-
-    @Override
-    public int getPositionTokensFlow() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

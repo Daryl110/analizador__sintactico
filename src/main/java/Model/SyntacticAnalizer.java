@@ -5,7 +5,7 @@
  */
 package Model;
 
-import Model.Statement.ExpressionStatement;
+import Model.Statement.SimpleAssignmentStatement;
 import Model.Statement.Structure.Statement;
 import java.util.ArrayList;
 
@@ -15,13 +15,14 @@ import java.util.ArrayList;
  */
 public class SyntacticAnalizer {
 
-    private ArrayList<Lexeme> lexemes;
+    private final ArrayList<Lexeme> lexemes;
 
     public SyntacticAnalizer(ArrayList<Lexeme> lexemes) {
         this.lexemes = lexemes;
     }
 
     public Statement analyze() throws Exception {
-        return new ExpressionStatement(null, new TokensFlow(this.lexemes)).analyze();
+        TokensFlow tokensFlow = new TokensFlow(this.lexemes);
+        return new SimpleAssignmentStatement(null).analyze(tokensFlow, tokensFlow.getCurrentToken());
     }
 }
