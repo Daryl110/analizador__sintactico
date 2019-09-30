@@ -191,6 +191,11 @@ public class ArrayExpressionStatement extends Statement {
                         } else {
                             if (lexeme != null && lexeme.getType().equals(LexemeTypes.OPEN_BRACKETS)) {
                                 return this.recursiveAnalyze(tokensFlow, lexeme);
+                            } else if (lexeme != null && lexeme.getType().equals(LexemeTypes.OTHERS)
+                                    && lexeme.getWord().equals(",")) {
+                                this.childs.add(lexeme);
+                                lexeme = tokensFlow.move();
+                                return recursiveAnalyze(tokensFlow, lexeme);
                             }
                             return null;
                         }
