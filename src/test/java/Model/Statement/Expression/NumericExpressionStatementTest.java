@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.Statement;
+package Model.Statement.Expression;
 
+import Model.Statement.Expression.NumericExpressionStatement;
 import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.TokensFlow;
@@ -29,12 +30,20 @@ public class NumericExpressionStatementTest {
         
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, "+", LexemeTypes.ARITHMETIC_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "+", LexemeTypes.ARITHMETIC_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         
         TokensFlow tokensFlow = new TokensFlow(lexemes);
         
-        NumericExpressionStatement numericExpressionStatement = new NumericExpressionStatement(null, tokensFlow);
+        NumericExpressionStatement numericExpressionStatement = new NumericExpressionStatement(null);
         
-        assertEquals(3, numericExpressionStatement.analyze().getChildCount());
+        tokensFlow.savePositionCurrent();
+        
+        assertEquals(9, numericExpressionStatement.analyze(tokensFlow, tokensFlow.getCurrentToken()).getChildCount());
     }
 }

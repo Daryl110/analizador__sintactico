@@ -28,17 +28,12 @@ public abstract class Statement implements TreeNode{
      */
     protected List<Statement> childs;
     
-    public abstract Statement analyze();
-    public abstract int getPositionTokensFlow();
+    public abstract Statement analyze(TokensFlow tokensFlow, Lexeme lexeme);
     @Override
     public abstract String toString();
     
     public void setParent(Statement root){
         this.root = root;
-    }
-    
-    public void addChild(Statement child){
-        this.childs.add(child);
     }
     
     @Override

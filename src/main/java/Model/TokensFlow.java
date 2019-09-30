@@ -33,12 +33,17 @@ public class TokensFlow {
         return this.lexemes.get(posCurrent);
     }
     
-    public void moveTo(int position){
+    public Lexeme moveTo(int position){
         posCurrent = position;
+        return  getCurrentToken();
     }
     
     public int getPositionCurrent(){
         return posCurrent;
+    }
+
+    public int getPosTemp() {
+        return posTemp;
     }
 
     public void savePositionCurrent() {
