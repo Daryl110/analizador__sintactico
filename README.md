@@ -6,6 +6,7 @@ construido con el lenguaje de programacion java en su version 12.
 * <a href="https://github.com/Daryl110/analizador__lexico">Analizador Lexico</a>
 * <a href="./LICENSE">Licencia</a>
 * <a href="./.circleci/config.yml">CircleCi</a>
+* <a href="./.circleci/config.yml">Definición de BNF's</a>
 
 <h2>Gramaticas</h2>
 
@@ -22,6 +23,6 @@ construido con el lenguaje de programacion java en su version 12.
 - <h3>Sentencias</h3>
 <ol>
     <li><a href="./src/main/java/Model/Statement/BlockStatement.java">Sentencia de Bloque</a></li>
-    <li><a href="./src/main/java/Model/Statement/Expression/InvokeFunctionStatement.java">Sentencia de Invocación de Función</a></li>
-    <li><a href="./src/main/java/Model/Statement/Expression/Assignment/SimpleAssignmentStatement.java">Sentencia de Asignación Simple</a></li>
+    <li><a href="./src/main/java/Model/Statement/InvokeFunctionStatement.java">Sentencia de Invocación de Función</a></li>
+    <li><a href="./src/main/java/Model/Statement/Assignment/SimpleAssignmentStatement.java">Sentencia de Asignación Simple</a></li>
 </ol>
