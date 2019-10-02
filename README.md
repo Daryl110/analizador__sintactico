@@ -6,7 +6,7 @@ construido con el lenguaje de programacion java en su version 12.
 * <a href="https://github.com/Daryl110/analizador__lexico">Analizador Lexico</a>
 * <a href="./LICENSE">Licencia</a>
 * <a href="./.circleci/config.yml">CircleCi</a>
-* <a href="./.circleci/config.yml">Definición de BNF's</a>
+* <a href="https://github.com/Daryl110/analizador__sintactico/wiki/BFN's">Definición de BNF's</a>
 
 <h2>Gramaticas</h2>
 
