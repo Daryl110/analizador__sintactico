@@ -20,4 +20,5 @@ public class SyntacticTypes {
     // Statements
     public static final String SIMPLE_ASSIGNMENT_STATMENT = "Simple Assignment Statement";
     public static final String INVOKE_FUNCTION_STATMENT = "Invoke Function Statement";
+    public static final String OTHERS_ASSIGNMENTS_STATMENT = "Others Assignments Statement";
 }

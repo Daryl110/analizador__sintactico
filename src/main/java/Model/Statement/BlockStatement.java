@@ -8,6 +8,7 @@ package Model.Statement;
 import Model.Statement.Assignment.SimpleAssignmentStatement;
 import Model.Lexeme;
 import Model.LexemeTypes;
+import Model.Statement.Assignment.OthersAssignmentsStatement;
 import Model.Statement.Structure.Statement;
 import Model.TokensFlow;
 
@@ -49,6 +50,11 @@ public class BlockStatement extends Statement{
                 return this.statement;
             }
             return null;
+        }
+        this.statement = new OthersAssignmentsStatement(this.root, tokensFlow.getPositionCurrent());
+        this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
+        if (this.statement != null) {
+            return this.statement;
         }
         //Las demas sentencias van debajo o arriba de la sentencia de arriba de este comentario
         if (this.positionBack != -1) {

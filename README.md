@@ -25,4 +25,5 @@ construido con el lenguaje de programacion java en su version 12.
     <li><a href="./src/main/java/Model/Statement/BlockStatement.java">Sentencia de Bloque</a></li>
     <li><a href="./src/main/java/Model/Statement/InvokeFunctionStatement.java">Sentencia de Invocación de Función</a></li>
     <li><a href="./src/main/java/Model/Statement/Assignment/SimpleAssignmentStatement.java">Sentencia de Asignación Simple</a></li>
+    <li><a href="./src/main/java/Model/Statement/Assignment/OthersAssignmentsStatement.java">Sentencia de Otras Asignaciones</a></li>
 </ol>

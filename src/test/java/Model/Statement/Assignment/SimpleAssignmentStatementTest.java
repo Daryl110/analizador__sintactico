@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.Statement;
+package Model.Statement.Assignment;
 
 import Model.Statement.Assignment.SimpleAssignmentStatement;
 import Model.Lexeme;

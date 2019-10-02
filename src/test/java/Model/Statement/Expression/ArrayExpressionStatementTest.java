@@ -61,6 +61,6 @@ public class ArrayExpressionStatementTest {
         
         TokensFlow tokensFlow = new TokensFlow(lexemes);
         
-        assertEquals(31, expressionStatement.analyze(tokensFlow,tokensFlow.getCurrentToken()).getChildCount());
+        assertEquals(17, expressionStatement.analyze(tokensFlow,tokensFlow.getCurrentToken()).getChildCount());
     }
 }
