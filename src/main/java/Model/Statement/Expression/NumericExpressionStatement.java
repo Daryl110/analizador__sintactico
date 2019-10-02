@@ -7,7 +7,7 @@ package Model.Statement.Expression;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
-import Model.Statement.InvokeFunctionStatement;
+import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;

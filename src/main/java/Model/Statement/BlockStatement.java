@@ -5,6 +5,7 @@
  */
 package Model.Statement;
 
+import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Statement.Assignment.SimpleAssignmentStatement;
 import Model.Lexeme;
 import Model.LexemeTypes;

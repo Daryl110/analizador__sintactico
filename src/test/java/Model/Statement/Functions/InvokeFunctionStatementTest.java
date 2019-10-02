@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.Statement;
+package Model.Statement.Functions;
 
+import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.Statement.Structure.Statement;
