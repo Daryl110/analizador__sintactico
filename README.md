@@ -27,4 +27,5 @@ construido con el lenguaje de programacion java en su version 12.
     <li><a href="./src/main/java/Model/Statement/Assignment/SimpleAssignmentStatement.java">Sentencia de Asignación Simple</a></li>
     <li><a href="./src/main/java/Model/Statement/Assignment/OthersAssignmentsStatement.java">Sentencia de Otras Asignaciones</a></li>
     <li><a href="./src/main/java/Model/Statement/Switch/CaseStatement.java">Sentencia Case/Default</a></li>
+    <li><a href="./src/main/java/Model/Statement/Switch/SwitchStatement.java">Sentencia Switch</a></li>
 </ol>

@@ -22,4 +22,5 @@ public class SyntacticTypes {
     public static final String INVOKE_FUNCTION_STATMENT = "Invoke Function Statement";
     public static final String OTHERS_ASSIGNMENTS_STATMENT = "Others Assignments Statement";
     public static final String CASE_STATEMENT = "Case Statement";
+    public static final String SWITCH_STATEMENT = "Switch Statement";
 }

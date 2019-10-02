@@ -11,6 +11,7 @@ import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.Statement.Assignment.OthersAssignmentsStatement;
 import Model.Statement.Structure.Statement;
+import Model.Statement.Switch.SwitchStatement;
 import Model.TokensFlow;
 
 /**
@@ -53,6 +54,11 @@ public class BlockStatement extends Statement{
             return null;
         }
         this.statement = new OthersAssignmentsStatement(this.root, tokensFlow.getPositionCurrent());
+        this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
+        if (this.statement != null) {
+            return this.statement;
+        }
+        this.statement = new SwitchStatement(this.root, tokensFlow.getPositionCurrent());
         this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
         if (this.statement != null) {
             return this.statement;

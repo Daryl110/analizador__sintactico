@@ -96,7 +96,31 @@ public class CaseStatement extends Statement {
                         lexeme = tokensFlow.move();
 
                         if (withReturn && lexeme != null && !lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
-                            continue;
+                            Statement expression = new ExpressionStatement(this, tokensFlow.getPositionCurrent());
+                            expression = expression.analyze(tokensFlow, lexeme);
+                            if (expression != null) {
+                                this.childs.add(expression);
+                                lexeme = tokensFlow.getCurrentToken();
+
+                                if (lexeme != null && lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
+                                    this.childs.add(lexeme);
+                                    return this;
+                                } else {
+                                    if (this.positionBack != -1) {
+                                        tokensFlow.moveTo(this.positionBack);
+                                    } else {
+                                        tokensFlow.backTrack();
+                                    }
+                                    return null;
+                                }
+                            } else {
+                                if (this.positionBack != -1) {
+                                    tokensFlow.moveTo(this.positionBack);
+                                } else {
+                                    tokensFlow.backTrack();
+                                }
+                                return null;
+                            }
                         } else if (lexeme != null && lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
                             this.childs.add(lexeme);
                             return this;
@@ -127,7 +151,7 @@ public class CaseStatement extends Statement {
                         tokensFlow.backTrack();
                     }
                     return null;
-                }else{
+                } else {
                     return this;
                 }
             }
