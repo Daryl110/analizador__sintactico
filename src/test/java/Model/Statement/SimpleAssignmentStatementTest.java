@@ -5,6 +5,7 @@
  */
 package Model.Statement;
 
+import Model.Statement.Assignment.SimpleAssignmentStatement;
 import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.TokensFlow;

@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.Statement;
+package Model.Statement.Assignment;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.Statement.Expression.ExpressionStatement;
+import Model.Statement.InvokeFunctionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;

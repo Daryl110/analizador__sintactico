@@ -13,11 +13,11 @@ import java.util.ArrayList;
  *
  * @author Daryl Ospina
  */
-public class SyntacticAnalizer {
+public class SyntacticAnalyzer {
 
     private final ArrayList<Lexeme> lexemes;
 
-    public SyntacticAnalizer(ArrayList<Lexeme> lexemes) {
+    public SyntacticAnalyzer(ArrayList<Lexeme> lexemes) {
         this.lexemes = lexemes;
     }
 
