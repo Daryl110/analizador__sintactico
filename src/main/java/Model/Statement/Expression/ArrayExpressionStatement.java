@@ -35,7 +35,7 @@ public class ArrayExpressionStatement extends Statement {
 
     @Override
     public Statement analyze(TokensFlow tokensFlow, Lexeme lexeme) {
-        if (lexeme.getType().equals(LexemeTypes.OPEN_BRACKETS)) {
+        if (lexeme != null && lexeme.getType().equals(LexemeTypes.OPEN_BRACKETS)) {
             this.childs.add(lexeme);
             lexeme = tokensFlow.move();
 
@@ -45,7 +45,7 @@ public class ArrayExpressionStatement extends Statement {
                 return null;
             }
 
-            if (lexeme.getType().equals(LexemeTypes.CLOSE_BRACKETS)) {
+            if (lexeme != null && lexeme.getType().equals(LexemeTypes.CLOSE_BRACKETS)) {
                 this.childs.add(lexeme);
                 tokensFlow.move();
                 return this;

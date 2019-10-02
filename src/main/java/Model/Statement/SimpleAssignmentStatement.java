@@ -27,7 +27,7 @@ public class SimpleAssignmentStatement extends Statement {
     public SimpleAssignmentStatement(Statement root, int positionBack) {
         super(root, positionBack);
     }
-    
+
     @Override
     public String toString() {
         return SyntacticTypes.SIMPLE_ASSIGNMENT_STATMENT;
@@ -55,8 +55,15 @@ public class SimpleAssignmentStatement extends Statement {
                     this.childs.add(this.expression);
                     lexeme = tokensFlow.getCurrentToken();
                 } else {
-                    // invocar funcion
-                    return null;
+                    this.expression = new InvokeFunctionStatement(this.root, tokensFlow.getPositionCurrent());
+                    this.expression = this.expression.analyze(tokensFlow, lexeme);
+                    if (this.expression != null) {
+                        this.childs.add(this.expression);
+                        lexeme = tokensFlow.getCurrentToken();
+                    } else {
+                        //Funcion anonima
+                        return null;
+                    }
                 }
             }
 

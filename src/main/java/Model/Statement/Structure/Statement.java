@@ -46,6 +46,10 @@ public abstract class Statement implements TreeNode{
     public abstract String toString();
     public abstract Statement analyze(TokensFlow tokensFlow, Lexeme lexeme);
     
+    public boolean addChild(Statement statement){
+        return this.childs.add(statement);
+    }
+    
     public void setParent(Statement root){
         this.root = root;
     }
@@ -93,5 +97,9 @@ public abstract class Statement implements TreeNode{
      */
     public void setChilds(List<Statement> childs) {
         this.childs = childs;
+    }
+
+    public List<Statement> getChilds() {
+        return childs;
     }
 }

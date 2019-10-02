@@ -6,6 +6,7 @@
 package Model.Statement;
 
 import Model.Lexeme;
+import Model.LexemeTypes;
 import Model.Statement.Structure.Statement;
 import Model.TokensFlow;
 
@@ -36,6 +37,17 @@ public class BlockStatement extends Statement{
         this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
         if (this.statement != null) {
             return this.statement;
+        }
+        this.statement = new InvokeFunctionStatement(this.root, tokensFlow.getPositionCurrent());
+        this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
+        if (this.statement != null) {
+            lexeme = tokensFlow.getCurrentToken();
+            
+            if (lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
+                this.statement.addChild(lexeme);
+                return this.statement;
+            }
+            return null;
         }
         //Las demas sentencias van debajo o arriba de la sentencia de arriba de este comentario
         if (this.positionBack != -1) {
