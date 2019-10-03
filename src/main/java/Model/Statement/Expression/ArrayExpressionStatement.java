@@ -7,6 +7,7 @@ package Model.Statement.Expression;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
+import Model.Statement.Functions.ArrowFunctionStatement;
 import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
@@ -24,6 +25,7 @@ public class ArrayExpressionStatement extends Statement {
     private RelationalExpressionStatement relational;
     private InvokeFunctionStatement invokeFunction;
     private ArrayExpressionStatement array;
+    private ArrowFunctionStatement arrowFunction;
 
     public ArrayExpressionStatement(Statement root) {
         super(root);
@@ -149,6 +151,22 @@ public class ArrayExpressionStatement extends Statement {
                                         return recursiveAnalyze(tokensFlow, tokensFlow.move());
                                     } else {
                                         return lexeme;
+                                    }
+                                } else {
+                                    this.arrowFunction = new ArrowFunctionStatement(this, tokensFlow.getPositionCurrent());
+                                    this.arrowFunction = (ArrowFunctionStatement) this.arrowFunction.analyze(tokensFlow, lexeme);
+                                    if (this.arrowFunction != null) {
+                                        this.childs.add(this.arrowFunction);
+                                        lexeme = tokensFlow.getCurrentToken();
+
+                                        if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS) && lexeme.getWord().equals(","))) {
+                                            this.childs.add(lexeme);
+                                            return recursiveAnalyze(tokensFlow, tokensFlow.move());
+                                        } else {
+                                            return lexeme;
+                                        }
+                                    } else {
+                                        System.out.println("Function");
                                     }
                                 }
                             } else {
