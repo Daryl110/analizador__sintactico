@@ -11,6 +11,8 @@ package Model.Statement.Structure;
  */
 public class SyntacticTypes {
     
+    // Compilation unit
+    public static final String COMPILATION_UNIT = "Compilation Unit";
     // Expressions
     public static final String NUMERIC_EXPRESSION_STATEMENT = "Numeric Expression";
     public static final String RELATIONAL_EXPRESSION_STATEMENT = "Relational Expression";
@@ -26,6 +28,6 @@ public class SyntacticTypes {
     public static final String IF_STATEMENT = "If Statement";
     public static final String RETURN_STATEMENT = "Return Statement";
     public static final String ELSE_STATEMENT = "Else Statement";
-    // Compilation unit
-    public static final String COMPILATION_UNIT = "Compilation Unit";
+    public static final String INCREMENTAL_DECREMENTAL_OPERATION_STATEMENT = "Incremental or Decremental Operation";
+    public static final String FOR_STATEMENT = "For Statement";
 }
