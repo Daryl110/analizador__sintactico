@@ -9,6 +9,8 @@ import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.TokensFlow;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -18,9 +20,10 @@ import static org.junit.Assert.*;
  */
 public class StringExpressionStatementTest {
     
+    private Logger log = Logger.getLogger(StringExpressionStatementTest.class.getName());
+    
     @Test
     public void testAnalyze() {
-        System.out.println("analyze");
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
@@ -33,6 +36,8 @@ public class StringExpressionStatementTest {
         lexemes.add(new Lexeme(0, 0, "+", LexemeTypes.ARITHMETIC_OPERATORS));
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.STRINGS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        
+        this.log.log(Level.INFO, "Analyze: {0}", lexemes.toString());
         
         StringExpressionStatement stringExpressionStatement = new StringExpressionStatement(null);
         TokensFlow tokensFlow = new TokensFlow(lexemes);

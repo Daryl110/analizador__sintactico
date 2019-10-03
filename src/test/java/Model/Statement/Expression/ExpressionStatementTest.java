@@ -5,13 +5,14 @@
  */
 package Model.Statement.Expression;
 
-import Model.Statement.Expression.ExpressionStatement;
 import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -21,9 +22,10 @@ import static org.junit.Assert.*;
  */
 public class ExpressionStatementTest {
     
+    private final Logger log = Logger.getLogger(ExpressionStatementTest.class.getName());
+    
     @Test
     public void testAnalyze() {
-        System.out.println("analyze");
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         ExpressionStatement expressionStatement = new ExpressionStatement(null, 0);
@@ -41,6 +43,8 @@ public class ExpressionStatementTest {
         lexemes.add(new Lexeme(expressionStatement, 0, 0, "==", LexemeTypes.RELATIONAL_OPERATORS));
         lexemes.add(new Lexeme(expressionStatement, 0, 0, "5", LexemeTypes.STRINGS));
         lexemes.add(new Lexeme(expressionStatement, 0, 0, "]", LexemeTypes.CLOSE_BRACKETS));
+        
+        this.log.log(Level.INFO, "Analyze: {0}", lexemes.toString());
         
         TokensFlow tokensFlow = new TokensFlow(lexemes);
         
