@@ -9,6 +9,7 @@ import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.Statement.BlockStatement;
 import Model.Statement.Expression.ExpressionStatement;
+import Model.Statement.Others.ReturnStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
@@ -44,13 +45,13 @@ public class CaseStatement extends Statement {
             lexeme = tokensFlow.move();
 
             if (caseIsDefault) {
-                return terminateCase(tokensFlow, tokensFlow.getCurrentToken(), true);
+                return terminateCase(tokensFlow, tokensFlow.getCurrentToken());
             } else {
                 Statement expression = new ExpressionStatement(this, tokensFlow.getPositionCurrent());
                 expression = expression.analyze(tokensFlow, lexeme);
                 if (expression != null) {
                     this.childs.add(expression);
-                    return terminateCase(tokensFlow, tokensFlow.getCurrentToken(), false);
+                    return terminateCase(tokensFlow, tokensFlow.getCurrentToken());
                 }
             }
         }
@@ -62,7 +63,7 @@ public class CaseStatement extends Statement {
         return null;
     }
 
-    private Statement terminateCase(TokensFlow tokensFlow, Lexeme lexeme, boolean caseIsDefault) {
+    private Statement terminateCase(TokensFlow tokensFlow, Lexeme lexeme) {
         if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS)
                 && lexeme.getWord().equals(":"))) {
 
@@ -72,11 +73,9 @@ public class CaseStatement extends Statement {
             if (lexeme != null && ((lexeme.getType().equals(LexemeTypes.SELECTIVE_CONTROL_STRUCTURE)
                     && (lexeme.getWord().equals("case")
                     || lexeme.getWord().equals("default")))
-                    || lexeme.getType().equals(LexemeTypes.CLOSE_BRACES)) && !caseIsDefault) {
+                    || lexeme.getType().equals(LexemeTypes.CLOSE_BRACES))) {
                 return this;
             } else {
-
-                boolean withReturn = false;
 
                 while (lexeme != null && !((lexeme.getType().equals(LexemeTypes.SELECTIVE_CONTROL_STRUCTURE)
                         && (lexeme.getWord().equals("case")
@@ -89,30 +88,11 @@ public class CaseStatement extends Statement {
                             && lexeme.getWord().equals("break"))) {
 
                         if (lexeme.getWord().equals("return")) {
-                            withReturn = true;
-                        }
-
-                        this.childs.add(lexeme);
-                        lexeme = tokensFlow.move();
-
-                        if (withReturn && lexeme != null && !lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
-                            Statement expression = new ExpressionStatement(this, tokensFlow.getPositionCurrent());
-                            expression = expression.analyze(tokensFlow, lexeme);
-                            if (expression != null) {
-                                this.childs.add(expression);
-                                lexeme = tokensFlow.getCurrentToken();
-
-                                if (lexeme != null && lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
-                                    this.childs.add(lexeme);
-                                    return this;
-                                } else {
-                                    if (this.positionBack != -1) {
-                                        tokensFlow.moveTo(this.positionBack);
-                                    } else {
-                                        tokensFlow.backTrack();
-                                    }
-                                    return null;
-                                }
+                            Statement returnStatement = new ReturnStatement(this, tokensFlow.getPositionCurrent());
+                            returnStatement = returnStatement.analyze(tokensFlow, lexeme);
+                            if (returnStatement != null) {
+                                this.childs.add(returnStatement);
+                                return this;
                             } else {
                                 if (this.positionBack != -1) {
                                     tokensFlow.moveTo(this.positionBack);
@@ -121,9 +101,22 @@ public class CaseStatement extends Statement {
                                 }
                                 return null;
                             }
-                        } else if (lexeme != null && lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
+                        }
+
+                        this.childs.add(lexeme);
+                        lexeme = tokensFlow.move();
+
+                        if (lexeme != null && lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
                             this.childs.add(lexeme);
+                            tokensFlow.move();
                             return this;
+                        } else {
+                            if (this.positionBack != -1) {
+                                tokensFlow.moveTo(this.positionBack);
+                            } else {
+                                tokensFlow.backTrack();
+                            }
+                            return null;
                         }
                     }
 
@@ -144,7 +137,7 @@ public class CaseStatement extends Statement {
 
                 if (lexeme != null && (lexeme.getType().equals(LexemeTypes.SELECTIVE_CONTROL_STRUCTURE)
                         && (lexeme.getWord().equals("case")
-                        || lexeme.getWord().equals("default"))) && caseIsDefault) {
+                        || lexeme.getWord().equals("default")))) {
                     if (this.positionBack != -1) {
                         tokensFlow.moveTo(this.positionBack);
                     } else {

@@ -63,7 +63,7 @@ public class SwitchStatement extends Statement {
                                 caseStatement = caseStatement.analyze(tokensFlow, lexeme);
                                 if (caseStatement != null) {
                                     this.childs.add(caseStatement);
-                                    lexeme = tokensFlow.move();
+                                    lexeme = tokensFlow.getCurrentToken();
                                 } else {
                                     if (this.positionBack != -1) {
                                         tokensFlow.moveTo(this.positionBack);

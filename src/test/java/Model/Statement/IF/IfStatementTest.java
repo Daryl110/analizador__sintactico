@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.Statement.Switch;
+package Model.Statement.IF;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  *
  * @author Daryl Ospina
  */
-public class CaseStatementTest {
+public class IfStatementTest {
     
     @Test
     public void testAnalyze() {
@@ -24,23 +24,22 @@ public class CaseStatementTest {
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
-        lexemes.add(new Lexeme(0, 0, "case", LexemeTypes.SELECTIVE_CONTROL_STRUCTURE));
-        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(0, 0, ":", LexemeTypes.OTHERS));
-        lexemes.add(new Lexeme(0, 0, "a", LexemeTypes.IDENTIFIERS));
-        lexemes.add(new Lexeme(0, 0, "+=", LexemeTypes.ASSIGNMENT_OPERATORS));
-        lexemes.add(new Lexeme(0, 0, "sum", LexemeTypes.IDENTIFIERS));
+        lexemes.add(new Lexeme(0, 0, "if", LexemeTypes.SELECTIVE_CONTROL_STRUCTURE));
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.CLOSE_PARENTHESIS));
-        lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
+        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, ">", LexemeTypes.RELATIONAL_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "6", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "{", LexemeTypes.OPEN_BRACES));
         lexemes.add(new Lexeme(0, 0, "return", LexemeTypes.FUNCTIONS));
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
+        lexemes.add(new Lexeme(0, 0, "}", LexemeTypes.CLOSE_BRACES));
         
-        CaseStatement cases = new CaseStatement(null);
+        IfStatement cases = new IfStatement(null);
         TokensFlow tokensFlow = new TokensFlow(lexemes);
         
-        assertEquals(5, cases.analyze(tokensFlow, tokensFlow.getCurrentToken()).getChildCount());
+        assertEquals(7, cases.analyze(tokensFlow, tokensFlow.getCurrentToken()).getChildCount());
     }
     
 }
