@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  *
  * @author Daryl Ospina
  */
-public class WhileStatementTest {
+public class UntilStatementTest {
 
     @Test
     public void testAnalyze() {
@@ -24,7 +24,7 @@ public class WhileStatementTest {
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
-        lexemes.add(new Lexeme(0, 0, "while", LexemeTypes.ITERATIVE_CONTROL_STRUCTURE));
+        lexemes.add(new Lexeme(0, 0, "until", LexemeTypes.ITERATIVE_CONTROL_STRUCTURE));
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "i", LexemeTypes.IDENTIFIERS));
         lexemes.add(new Lexeme(0, 0, "<", LexemeTypes.RELATIONAL_OPERATORS));
@@ -36,7 +36,7 @@ public class WhileStatementTest {
         lexemes.add(new Lexeme(0, 0, "}", LexemeTypes.CLOSE_BRACES));
         
         TokensFlow tokensFlow = new TokensFlow(lexemes);
-        WhileStatement forStatement = new WhileStatement(null);
+        UntilStatement forStatement = new UntilStatement(null);
         
         assertEquals(8, forStatement.analyze(tokensFlow, tokensFlow.getCurrentToken()).getChildCount());
     }
