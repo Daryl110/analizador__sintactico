@@ -46,7 +46,7 @@ public class ElseStatement extends Statement {
                 while (lexeme != null && !lexeme.getType().equals(LexemeTypes.CLOSE_BRACES)) {
 
                     if ((lexeme.getType().equals(LexemeTypes.FUNCTIONS) && lexeme.getWord().equals("return"))
-                            || (lexeme.getType().equals(LexemeTypes.OTHERS) && (lexeme.getWord().equals("breack")
+                            || (lexeme.getType().equals(LexemeTypes.OTHERS) && (lexeme.getWord().equals("break")
                             || lexeme.getWord().equals("continue")))) {
 
                         if (lexeme.getWord().equals("return")) {
@@ -67,7 +67,20 @@ public class ElseStatement extends Statement {
                         }
 
                         this.childs.add(lexeme);
-                        break;
+                        lexeme = tokensFlow.move();
+
+                        if (lexeme != null && lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
+                            this.childs.add(lexeme);
+                            lexeme = tokensFlow.move();
+                            break;
+                        } else {
+                            if (this.positionBack != -1) {
+                                tokensFlow.moveTo(this.positionBack);
+                            } else {
+                                tokensFlow.backTrack();
+                            }
+                            return null;
+                        }
                     }
 
                     Statement statement = new BlockStatement(this, tokensFlow.getPositionCurrent());

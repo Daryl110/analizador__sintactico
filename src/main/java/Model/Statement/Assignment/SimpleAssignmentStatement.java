@@ -63,12 +63,12 @@ public class SimpleAssignmentStatement extends Statement {
                         lexeme = tokensFlow.getCurrentToken();
                     } else {
                         //Funcion anonima
-                        return null;
+                        System.out.println("Hola");
                     }
                 }
             }
 
-            if (lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
+            if (lexeme != null && lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
                 this.childs.add(lexeme);
                 tokensFlow.move();
 
