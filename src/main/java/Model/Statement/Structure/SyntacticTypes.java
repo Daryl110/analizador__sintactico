@@ -31,4 +31,6 @@ public class SyntacticTypes {
     public static final String INCREMENTAL_DECREMENTAL_OPERATION_STATEMENT = "Incremental or Decremental Operation";
     public static final String FOR_STATEMENT = "For Statement";
     public static final String WHILE_STATEMENT = "While Statement";
+    public static final String PARAMETER_STATEMENT = "Parameters Statement";
+    public static final String ARROW_FUNCTION_STATEMENT = "Arrow Function Statement";
 }

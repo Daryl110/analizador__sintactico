@@ -25,7 +25,7 @@ construido con el lenguaje de programacion java en su version 12.
 - <h3>Sentencias</h3>
 <ol>
     <li><a href="./src/main/java/Model/Statement/BlockStatement.java">Sentencia de Bloque</a></li>
-    <li><a href="./src/main/java/Model/Statement/InvokeFunctionStatement.java">Sentencia de Invocación de Función</a></li>
+    <li><a href="./src/main/java/Model/Statement/Functions/InvokeFunctionStatement.java">Sentencia de Invocación de Función</a></li>
     <li><a href="./src/main/java/Model/Statement/Assignment/SimpleAssignmentStatement.java">Sentencia de Asignación Simple</a></li>
     <li><a href="./src/main/java/Model/Statement/Assignment/OthersAssignmentsStatement.java">Sentencia de Otras Asignaciones</a></li>
     <li><a href="./src/main/java/Model/Statement/Switch/CaseStatement.java">Sentencia Case/Default</a></li>
@@ -37,4 +37,6 @@ construido con el lenguaje de programacion java en su version 12.
     <li><a href="./src/main/java/Model/Statement/Iterators/ForStatement.java">Sentencia de Iteración For</a></li>
     <li><a href="./src/main/java/Model/Statement/Iterators/WhileStatement.java">Sentencia de Iteración While</a></li>
     <li><a href="./src/main/java/Model/Statement/Iterators/UntilStatement.java">Sentencia de Iteración Until</a></li>
+    <li><a href="./src/main/java/Model/Statement/Functions/ArrowFunctionStatement.java">Sentencia de Funcion Flecha</a></li>
+    <li><a href="./src/main/java/Model/Statement/Functions/ParameterStatement.java">Sentencia de Parametro</a></li>
 </ol>

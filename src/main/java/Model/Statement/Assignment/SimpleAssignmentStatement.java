@@ -8,6 +8,7 @@ package Model.Statement.Assignment;
 import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.Statement.Expression.ExpressionStatement;
+import Model.Statement.Functions.ArrowFunctionStatement;
 import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
@@ -62,8 +63,25 @@ public class SimpleAssignmentStatement extends Statement {
                         this.childs.add(this.expression);
                         lexeme = tokensFlow.getCurrentToken();
                     } else {
-                        //Funcion anonima
-                        System.out.println("Hola");
+                        this.expression = new ArrowFunctionStatement(this, tokensFlow.getPositionCurrent());
+                        this.expression = this.expression.analyze(tokensFlow, lexeme);
+                        if (this.expression != null) {
+                            this.childs.add(this.expression);
+                            lexeme = tokensFlow.getCurrentToken();
+                        } else {
+                            if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS)
+                                    && (lexeme.getWord().equals("NaN") || lexeme.getWord().equals("null")))) {
+                                this.childs.add(lexeme);
+                                lexeme = tokensFlow.move();
+                            } else {
+                                if (this.positionBack != -1) {
+                                    tokensFlow.moveTo(this.positionBack);
+                                } else {
+                                    tokensFlow.backTrack();
+                                }
+                                return null;
+                            }
+                        }
                     }
                 }
             }
