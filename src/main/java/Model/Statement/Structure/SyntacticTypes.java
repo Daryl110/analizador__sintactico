@@ -25,4 +25,5 @@ public class SyntacticTypes {
     public static final String SWITCH_STATEMENT = "Switch Statement";
     public static final String IF_STATEMENT = "If Statement";
     public static final String RETURN_STATEMENT = "Return Statement";
+    public static final String ELSE_STATEMENT = "Else Statement";
 }
