@@ -51,28 +51,28 @@ public class SimpleAssignmentStatement extends Statement {
                 this.childs.add(lexeme);
                 lexeme = tokensFlow.move();
 
-                this.expression = new ExpressionStatement(this.root, tokensFlow.getPositionCurrent());
-                this.expression = this.expression.analyze(tokensFlow, lexeme);
-                if (this.expression != null) {
-                    this.childs.add(this.expression);
-                    lexeme = tokensFlow.getCurrentToken();
+                if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS)
+                        && (lexeme.getWord().equals("NaN") || lexeme.getWord().equals("null")))) {
+                    this.childs.add(lexeme);
+                    lexeme = tokensFlow.move();
                 } else {
-                    this.expression = new InvokeFunctionStatement(this.root, tokensFlow.getPositionCurrent());
+                    this.expression = new ArrowFunctionStatement(this.root, tokensFlow.getPositionCurrent());
                     this.expression = this.expression.analyze(tokensFlow, lexeme);
                     if (this.expression != null) {
                         this.childs.add(this.expression);
                         lexeme = tokensFlow.getCurrentToken();
                     } else {
-                        this.expression = new ArrowFunctionStatement(this, tokensFlow.getPositionCurrent());
+                        this.expression = new InvokeFunctionStatement(this.root, tokensFlow.getPositionCurrent());
                         this.expression = this.expression.analyze(tokensFlow, lexeme);
                         if (this.expression != null) {
                             this.childs.add(this.expression);
                             lexeme = tokensFlow.getCurrentToken();
                         } else {
-                            if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS)
-                                    && (lexeme.getWord().equals("NaN") || lexeme.getWord().equals("null")))) {
-                                this.childs.add(lexeme);
-                                lexeme = tokensFlow.move();
+                            this.expression = new ExpressionStatement(this, tokensFlow.getPositionCurrent());
+                            this.expression = this.expression.analyze(tokensFlow, lexeme);
+                            if (this.expression != null) {
+                                this.childs.add(this.expression);
+                                lexeme = tokensFlow.getCurrentToken();
                             } else {
                                 if (this.positionBack != -1) {
                                     tokensFlow.moveTo(this.positionBack);

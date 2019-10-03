@@ -11,12 +11,15 @@ import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.Statement.Assignment.IncrementalDecrementalOperationStatement;
 import Model.Statement.Assignment.OthersAssignmentsStatement;
+import Model.Statement.Functions.FunctionStatement;
 import Model.Statement.IF.IfStatement;
+import Model.Statement.Iterators.ForEachStatement;
 import Model.Statement.Iterators.ForStatement;
 import Model.Statement.Iterators.WhileStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Switch.SwitchStatement;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -68,6 +71,11 @@ public class BlockStatement extends Statement {
         if (this.statement != null) {
             return this.statement;
         }
+        this.statement = new FunctionStatement(this.root, tokensFlow.getPositionCurrent());
+        this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
+        if (this.statement != null) {
+            return this.statement;
+        }
         this.statement = new SwitchStatement(this.root, tokensFlow.getPositionCurrent());
         this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
         if (this.statement != null) {
@@ -84,6 +92,11 @@ public class BlockStatement extends Statement {
             return this.statement;
         }
         this.statement = new ForStatement(this.root, tokensFlow.getPositionCurrent());
+        this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
+        if (this.statement != null) {
+            return this.statement;
+        }
+        this.statement = new ForEachStatement(this.root, tokensFlow.getPositionCurrent());
         this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
         if (this.statement != null) {
             return this.statement;
@@ -111,6 +124,6 @@ public class BlockStatement extends Statement {
         } else {
             tokensFlow.backTrack();
         }
-        return null;
+        throw new SyntaxError(lexeme.toString());
     }
 }

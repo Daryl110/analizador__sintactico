@@ -29,7 +29,7 @@ public class ForEachStatement extends Statement {
 
     @Override
     public String toString() {
-        return SyntacticTypes.FOR_STATEMENT;
+        return SyntacticTypes.FOR_EACH_STATEMENT;
     }
 
     @Override

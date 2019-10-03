@@ -33,17 +33,23 @@ public class ReturnStatement extends Statement {
 
     @Override
     public Statement analyze(TokensFlow tokensFlow, Lexeme lexeme) {
-        
+
         if (lexeme != null
                 && (lexeme.getType().equals(LexemeTypes.FUNCTIONS) && lexeme.getWord().equals("return"))) {
             this.childs.add(lexeme);
             lexeme = tokensFlow.move();
 
-            Statement expression = new ExpressionStatement(this, tokensFlow.getPositionCurrent());
-            expression = expression.analyze(tokensFlow, lexeme);
-            if (expression != null) {
-                this.childs.add(expression);
-                lexeme = tokensFlow.getCurrentToken();
+            if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS)
+                    && (lexeme.getWord().equals("NaN") || lexeme.getWord().equals("null")))) {
+                this.childs.add(lexeme);
+                lexeme = tokensFlow.move();
+            } else {
+                Statement expression = new ExpressionStatement(this, tokensFlow.getPositionCurrent());
+                expression = expression.analyze(tokensFlow, lexeme);
+                if (expression != null) {
+                    this.childs.add(expression);
+                    lexeme = tokensFlow.getCurrentToken();
+                }
             }
 
             if (lexeme != null && lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
@@ -52,7 +58,7 @@ public class ReturnStatement extends Statement {
                 return this;
             }
         }
-        
+
         if (this.positionBack != -1) {
             tokensFlow.moveTo(this.positionBack);
         } else {

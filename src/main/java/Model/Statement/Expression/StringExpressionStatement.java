@@ -7,6 +7,7 @@ package Model.Statement.Expression;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
+import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
@@ -67,7 +68,83 @@ public class StringExpressionStatement extends Statement {
                         }
                         lexeme = tokensFlow.move();
 
-                        return analyze(tokensFlow, lexeme);
+                        if (lexeme.getType().equals(LexemeTypes.STRINGS)) {
+                            return analyze(tokensFlow, lexeme);
+                        } else {
+                            Statement numeric = new NumericExpressionStatement(this, tokensFlow.getPositionCurrent());
+                            numeric = numeric.analyze(tokensFlow, lexeme);
+
+                            if (numeric != null) {
+                                this.childs.add(numeric);
+                                lexeme = tokensFlow.getCurrentToken();
+
+                                if (lexeme != null && !(lexeme.getType().equals(LexemeTypes.DELIMITERS)
+                                        || lexeme.getType().equals(LexemeTypes.OPEN_BRACES))
+                                        && ((lexeme.getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)
+                                        && lexeme.getWord().equals("+"))
+                                        || (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS) && this.openedParenthesis != 0))) {
+
+                                    this.childs.add(lexeme);
+                                    if (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
+                                        this.openedParenthesis--;
+                                    }
+
+                                    return this.analyze(tokensFlow, tokensFlow.move());
+                                } else {
+                                    if (this.openedParenthesis == 0) {
+                                        return this;
+                                    }
+                                    if (this.positionBack != -1) {
+                                        tokensFlow.moveTo(this.positionBack);
+                                    } else {
+                                        tokensFlow.backTrack();
+                                    }
+                                    return null;
+                                }
+                            } else {
+                                Statement invokeFunction = new InvokeFunctionStatement(this, tokensFlow.getPositionCurrent());
+                                invokeFunction = invokeFunction.analyze(tokensFlow, lexeme);
+
+                                if (invokeFunction != null) {
+                                    this.childs.add(invokeFunction);
+                                    lexeme = tokensFlow.getCurrentToken();
+
+                                    if (lexeme != null && !(lexeme.getType().equals(LexemeTypes.DELIMITERS)
+                                            || lexeme.getType().equals(LexemeTypes.OPEN_BRACES))
+                                            && ((lexeme.getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)
+                                            && lexeme.getWord().equals("+"))
+                                            || (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS) && this.openedParenthesis != 0))) {
+
+                                        this.childs.add(lexeme);
+                                        if (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
+                                            this.openedParenthesis--;
+                                        }
+
+                                        return this.analyze(tokensFlow, tokensFlow.move());
+                                    } else {
+                                        if (this.openedParenthesis == 0) {
+                                            return this;
+                                        }
+                                        if (this.positionBack != -1) {
+                                            tokensFlow.moveTo(this.positionBack);
+                                        } else {
+                                            tokensFlow.backTrack();
+                                        }
+                                        return null;
+                                    }
+                                } else {
+                                    if (this.openedParenthesis == 0) {
+                                        return this;
+                                    }
+                                    if (this.positionBack != -1) {
+                                        tokensFlow.moveTo(this.positionBack);
+                                    } else {
+                                        tokensFlow.backTrack();
+                                    }
+                                    return null;
+                                }
+                            }
+                        }
 
                     } else {
                         if (this.openedParenthesis == 0) {
@@ -126,15 +203,79 @@ public class StringExpressionStatement extends Statement {
                 return null;
             }
         } else {
-            if (this.openedParenthesis == 0 && this.childs.size() > 0) {
-                return this;
-            }
-            if (this.positionBack != -1) {
-                tokensFlow.moveTo(this.positionBack);
+            Statement numeric = new NumericExpressionStatement(this, tokensFlow.getPositionCurrent());
+            numeric = numeric.analyze(tokensFlow, lexeme);
+
+            if (numeric != null) {
+                this.childs.add(numeric);
+                lexeme = tokensFlow.getCurrentToken();
+
+                if (lexeme != null && !(lexeme.getType().equals(LexemeTypes.DELIMITERS)
+                        || lexeme.getType().equals(LexemeTypes.OPEN_BRACES))
+                        && ((lexeme.getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)
+                        && lexeme.getWord().equals("+"))
+                        || (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS) && this.openedParenthesis != 0))) {
+
+                    this.childs.add(lexeme);
+                    if (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
+                        this.openedParenthesis--;
+                    }
+
+                    return this.analyze(tokensFlow, tokensFlow.move());
+                } else {
+                    if (this.openedParenthesis == 0) {
+                        return this;
+                    }
+                    if (this.positionBack != -1) {
+                        tokensFlow.moveTo(this.positionBack);
+                    } else {
+                        tokensFlow.backTrack();
+                    }
+                    return null;
+                }
             } else {
-                tokensFlow.backTrack();
+                Statement invokeFunction = new InvokeFunctionStatement(this, tokensFlow.getPositionCurrent());
+                invokeFunction = invokeFunction.analyze(tokensFlow, lexeme);
+
+                if (invokeFunction != null) {
+                    this.childs.add(invokeFunction);
+                    lexeme = tokensFlow.getCurrentToken();
+
+                    if (lexeme != null && !(lexeme.getType().equals(LexemeTypes.DELIMITERS)
+                            || lexeme.getType().equals(LexemeTypes.OPEN_BRACES))
+                            && ((lexeme.getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)
+                            && lexeme.getWord().equals("+"))
+                            || (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS) && this.openedParenthesis != 0))) {
+
+                        this.childs.add(lexeme);
+                        if (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
+                            this.openedParenthesis--;
+                        }
+
+                        return this.analyze(tokensFlow, tokensFlow.move());
+                    } else {
+                        if (this.openedParenthesis == 0) {
+                            return this;
+                        }
+                        if (this.positionBack != -1) {
+                            tokensFlow.moveTo(this.positionBack);
+                        } else {
+                            tokensFlow.backTrack();
+                        }
+                        return null;
+                    }
+                } else {
+                    if (this.openedParenthesis == 0 && this.childs.size() >= 1) {
+                        return this;
+                    }
+                    if (this.positionBack != -1) {
+                        tokensFlow.moveTo(this.positionBack);
+                    } else {
+                        tokensFlow.backTrack();
+                    }
+                    return null;
+                }
             }
-            return null;
         }
     }
 

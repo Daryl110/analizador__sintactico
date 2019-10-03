@@ -151,7 +151,7 @@ public class LogicalExpressionStatement extends Statement {
                 return this.analyze(tokensFlow, lexeme);
 
             } else {
-                if (this.openedParenthesis == 0 && operation) {
+                if (this.openedParenthesis == 0 && (operation || withTerminalBoolean)) {
                     return this;
                 }
                 if (this.positionBack != -1) {
@@ -162,7 +162,7 @@ public class LogicalExpressionStatement extends Statement {
                 return null;
             }
         } else {
-            if (this.openedParenthesis == 0 && this.childs.size() > 0) {
+            if (this.openedParenthesis == 0 && this.childs.size() > 0 && (operation || withTerminalBoolean)) {
                 return this;
             }
             if (this.positionBack != -1) {

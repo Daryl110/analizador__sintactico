@@ -134,19 +134,7 @@ public class CaseStatement extends Statement {
                         return null;
                     }
                 }
-
-                if (lexeme != null && (lexeme.getType().equals(LexemeTypes.SELECTIVE_CONTROL_STRUCTURE)
-                        && (lexeme.getWord().equals("case")
-                        || lexeme.getWord().equals("default")))) {
-                    if (this.positionBack != -1) {
-                        tokensFlow.moveTo(this.positionBack);
-                    } else {
-                        tokensFlow.backTrack();
-                    }
-                    return null;
-                } else {
-                    return this;
-                }
+                return this;
             }
         }
         if (this.positionBack != -1) {
