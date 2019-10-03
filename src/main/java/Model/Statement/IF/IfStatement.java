@@ -96,8 +96,14 @@ public class IfStatement extends Statement {
 
                             if (lexeme != null && lexeme.getType().equals(LexemeTypes.CLOSE_BRACES)) {
                                 this.childs.add(lexeme);
-                                tokensFlow.move();
-                                // agregar else
+                                lexeme = tokensFlow.move();
+                                
+                                Statement elseStatement = new ElseStatement(this, tokensFlow.getPositionCurrent());
+                                elseStatement = elseStatement.analyze(tokensFlow, lexeme);
+                                if (elseStatement != null) {
+                                    this.childs.add(elseStatement);
+                                }
+                                
                                 return this;
                             }
                         }
