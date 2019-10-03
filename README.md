@@ -34,4 +34,5 @@ construido con el lenguaje de programacion java en su version 12.
     <li><a href="./src/main/java/Model/Statement/IF/IfStatement.java">Sentencia If</a></li>
     <li><a href="./src/main/java/Model/Statement/IF/ElseStatement.java">Sentencia Else</a></li>
     <li><a href="./src/main/java/Model/Statement/Assignment/IncrementalDecrementalOperationStatement">Sentencia de Incremento o Decremento</a></li>
+    <li><a href="./src/main/java/Model/Statement/Iterators/ForStatement.java">Sentencia de Iteración For</a></li>
 </ol>
