@@ -33,4 +33,6 @@ public class SyntacticTypes {
     public static final String WHILE_STATEMENT = "While Statement";
     public static final String PARAMETER_STATEMENT = "Parameters Statement";
     public static final String ARROW_FUNCTION_STATEMENT = "Arrow Function Statement";
+    public static final String FUNCTION_STATEMENT = "Function Statement";
+    public static final String FOR_EACH_STATEMENT = "For Each Statement";
 }

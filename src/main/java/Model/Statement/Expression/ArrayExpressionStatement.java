@@ -8,6 +8,7 @@ package Model.Statement.Expression;
 import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.Statement.Functions.ArrowFunctionStatement;
+import Model.Statement.Functions.FunctionStatement;
 import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
@@ -26,6 +27,7 @@ public class ArrayExpressionStatement extends Statement {
     private InvokeFunctionStatement invokeFunction;
     private ArrayExpressionStatement array;
     private ArrowFunctionStatement arrowFunction;
+    private FunctionStatement function;
 
     public ArrayExpressionStatement(Statement root) {
         super(root);
@@ -85,10 +87,10 @@ public class ArrayExpressionStatement extends Statement {
                 return lexeme;
             }
         } else {
-            this.logical = new LogicalExpressionStatement(this, tokensFlow.getPositionCurrent());
-            this.logical = (LogicalExpressionStatement) this.logical.analyze(tokensFlow, lexeme);
-            if (this.logical != null) {
-                this.childs.add(this.logical);
+            this.arrowFunction = new ArrowFunctionStatement(this, tokensFlow.getPositionCurrent());
+            this.arrowFunction = (ArrowFunctionStatement) this.arrowFunction.analyze(tokensFlow, lexeme);
+            if (this.arrowFunction != null) {
+                this.childs.add(this.arrowFunction);
                 lexeme = tokensFlow.getCurrentToken();
 
                 if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS) && lexeme.getWord().equals(","))) {
@@ -98,10 +100,10 @@ public class ArrayExpressionStatement extends Statement {
                     return lexeme;
                 }
             } else {
-                this.relational = new RelationalExpressionStatement(this, tokensFlow.getPositionCurrent());
-                this.relational = (RelationalExpressionStatement) this.relational.analyze(tokensFlow, lexeme);
-                if (this.relational != null) {
-                    this.childs.add(this.relational);
+                this.logical = new LogicalExpressionStatement(this, tokensFlow.getPositionCurrent());
+                this.logical = (LogicalExpressionStatement) this.logical.analyze(tokensFlow, lexeme);
+                if (this.logical != null) {
+                    this.childs.add(this.logical);
                     lexeme = tokensFlow.getCurrentToken();
 
                     if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS) && lexeme.getWord().equals(","))) {
@@ -111,11 +113,11 @@ public class ArrayExpressionStatement extends Statement {
                         return lexeme;
                     }
                 } else {
-                    this.numeric = new NumericExpressionStatement(this, tokensFlow.getPositionCurrent());
-                    this.numeric = (NumericExpressionStatement) this.numeric.analyze(tokensFlow, lexeme);
+                    this.relational = new RelationalExpressionStatement(this, tokensFlow.getPositionCurrent());
+                    this.relational = (RelationalExpressionStatement) this.relational.analyze(tokensFlow, lexeme);
 
-                    if (this.numeric != null) {
-                        this.childs.add(this.numeric);
+                    if (this.relational != null) {
+                        this.childs.add(this.relational);
                         lexeme = tokensFlow.getCurrentToken();
 
                         if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS) && lexeme.getWord().equals(","))) {
@@ -125,11 +127,11 @@ public class ArrayExpressionStatement extends Statement {
                             return lexeme;
                         }
                     } else {
-                        this.string = new StringExpressionStatement(this, tokensFlow.getPositionCurrent());
-                        this.string = (StringExpressionStatement) this.string.analyze(tokensFlow, lexeme);
+                        this.numeric = new NumericExpressionStatement(this, tokensFlow.getPositionCurrent());
+                        this.numeric = (NumericExpressionStatement) this. numeric.analyze(tokensFlow, lexeme);
 
-                        if (this.string != null) {
-                            this.childs.add(this.string);
+                        if (this.numeric != null) {
+                            this.childs.add(this.numeric);
                             lexeme = tokensFlow.getCurrentToken();
 
                             if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS) && lexeme.getWord().equals(","))) {
@@ -153,10 +155,10 @@ public class ArrayExpressionStatement extends Statement {
                                         return lexeme;
                                     }
                                 } else {
-                                    this.arrowFunction = new ArrowFunctionStatement(this, tokensFlow.getPositionCurrent());
-                                    this.arrowFunction = (ArrowFunctionStatement) this.arrowFunction.analyze(tokensFlow, lexeme);
-                                    if (this.arrowFunction != null) {
-                                        this.childs.add(this.arrowFunction);
+                                    this.string = new StringExpressionStatement(this, tokensFlow.getPositionCurrent());
+                                    this.string = (StringExpressionStatement) this.string.analyze(tokensFlow, lexeme);
+                                    if (this.string != null) {
+                                        this.childs.add(this.string);
                                         lexeme = tokensFlow.getCurrentToken();
 
                                         if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS) && lexeme.getWord().equals(","))) {
@@ -166,7 +168,34 @@ public class ArrayExpressionStatement extends Statement {
                                             return lexeme;
                                         }
                                     } else {
-                                        System.out.println("Function");
+                                        this.function = new FunctionStatement(this, tokensFlow.getPositionCurrent());
+                                        this.function = (FunctionStatement) this.arrowFunction.analyze(tokensFlow, lexeme);
+                                        if (this.function != null) {
+                                            this.childs.add(this.function);
+                                            lexeme = tokensFlow.getCurrentToken();
+
+                                            if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS) && lexeme.getWord().equals(","))) {
+                                                this.childs.add(lexeme);
+                                                return recursiveAnalyze(tokensFlow, tokensFlow.move());
+                                            } else {
+                                                return lexeme;
+                                            }
+                                        } else {
+                                            if ((lexeme.getType().equals(LexemeTypes.OTHERS)
+                                                    && (lexeme.getWord().equals("NaN") || lexeme.getWord().equals("null")))) {
+                                                this.childs.add(lexeme);
+                                                lexeme = tokensFlow.move();
+
+                                                if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS) && lexeme.getWord().equals(","))) {
+                                                    this.childs.add(lexeme);
+                                                    return recursiveAnalyze(tokensFlow, tokensFlow.move());
+                                                } else {
+                                                    return lexeme;
+                                                }
+                                            } else {
+                                                return null;
+                                            }
+                                        }
                                     }
                                 }
                             } else {
@@ -177,7 +206,6 @@ public class ArrayExpressionStatement extends Statement {
                 }
             }
         }
-        return null;
     }
 
     @Override

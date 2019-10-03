@@ -37,6 +37,43 @@ construido con el lenguaje de programacion java en su version 12.
     <li><a href="./src/main/java/Model/Statement/Iterators/ForStatement.java">Sentencia de Iteración For</a></li>
     <li><a href="./src/main/java/Model/Statement/Iterators/WhileStatement.java">Sentencia de Iteración While</a></li>
     <li><a href="./src/main/java/Model/Statement/Iterators/UntilStatement.java">Sentencia de Iteración Until</a></li>
+    <li><a href="./src/main/java/Model/Statement/Iterators/ForEachStatement.java">Sentencia de Iteración For Each</a></li>
     <li><a href="./src/main/java/Model/Statement/Functions/ArrowFunctionStatement.java">Sentencia de Funcion Flecha</a></li>
+    <li><a href="./src/main/java/Model/Statement/Functions/FunctionStatement.java">Sentencia de Funcion</a></li>
     <li><a href="./src/main/java/Model/Statement/Functions/ParameterStatement.java">Sentencia de Parametro</a></li>
+</ol>
+
+<h2>Pruebas Unitarias</h2>
+
+- <h3><a href="./src/main/java/Model/Statement/CompilationUnit.java">Unidad de Compilación</a></h3>
+
+- <h3>Expresiones</h3>
+<ol>
+    <li><a href="./src/test/java/Model/Statement/Expression/ExpressionStatement.java">Expresión General</a></li>
+    <li><a href="./src/test/java/Model/Statement/Expression/ArrayExpressionStatement.java">Expresión para Definición de Array</a></li>
+    <li><a href="./src/test/java/Model/Statement/Expression/LogicalExpressionStatement.java">Expresión Numerica</a></li>
+    <li><a href="./src/test/java/Model/Statement/Expression/NumericExpressionStatement.java">Expresión Relacional</a></li>
+    <li><a href="./src/test/java/Model/Statement/Expression/RelationalExpressionStatement.java">Expresión Logica</a></li>
+    <li><a href="./src/test/java/Model/Statement/Expression/StringExpressionStatement.java">Expresión de Cadena</a></li>
+</ol>
+
+- <h3>Sentencias</h3>
+<ol>
+    <li><a href="./src/test/java/Model/Statement/BlockStatement.java">Sentencia de Bloque</a></li>
+    <li><a href="./src/test/java/Model/Statement/Functions/InvokeFunctionStatement.java">Sentencia de Invocación de Función</a></li>
+    <li><a href="./src/test/java/Model/Statement/Assignment/SimpleAssignmentStatement.java">Sentencia de Asignación Simple</a></li>
+    <li><a href="./src/test/java/Model/Statement/Assignment/OthersAssignmentsStatement.java">Sentencia de Otras Asignaciones</a></li>
+    <li><a href="./src/test/java/Model/Statement/Switch/CaseStatement.java">Sentencia Case/Default</a></li>
+    <li><a href="./src/test/java/Model/Statement/Switch/SwitchStatement.java">Sentencia Switch</a></li>
+    <li><a href="./src/test/java/Model/Statement/Others/ReturnStatement.java">Sentencia de Retorno</a></li>
+    <li><a href="./src/test/java/Model/Statement/IF/IfStatement.java">Sentencia If</a></li>
+    <li><a href="./src/test/java/Model/Statement/IF/ElseStatement.java">Sentencia Else</a></li>
+    <li><a href="./src/test/java/Model/Statement/Assignment/IncrementalDecrementalOperationStatement">Sentencia de Incremento o Decremento</a></li>
+    <li><a href="./src/test/java/Model/Statement/Iterators/ForStatement.java">Sentencia de Iteración For</a></li>
+    <li><a href="./src/test/java/Model/Statement/Iterators/WhileStatement.java">Sentencia de Iteración While</a></li>
+    <li><a href="./src/test/java/Model/Statement/Iterators/UntilStatement.java">Sentencia de Iteración Until</a></li>
+    <li><a href="./src/test/java/Model/Statement/Iterators/ForEachStatement.java">Sentencia de Iteración For Each</a></li>
+    <li><a href="./src/test/java/Model/Statement/Functions/ArrowFunctionStatement.java">Sentencia de Funcion Flecha</a></li>
+    <li><a href="./src/test/java/Model/Statement/Functions/FunctionStatement.java">Sentencia de Funcion</a></li>
+    <li><a href="./src/test/java/Model/Statement/Functions/ParameterStatement.java">Sentencia de Parametro</a></li>
 </ol>
