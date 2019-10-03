@@ -26,4 +26,6 @@ public class SyntacticTypes {
     public static final String IF_STATEMENT = "If Statement";
     public static final String RETURN_STATEMENT = "Return Statement";
     public static final String ELSE_STATEMENT = "Else Statement";
+    // Compilation unit
+    public static final String COMPILATION_UNIT = "Compilation Unit";
 }

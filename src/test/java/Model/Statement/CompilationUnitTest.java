@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.Statement.Switch;
+package Model.Statement;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  *
  * @author Daryl Ospina
  */
-public class SwitchStatementTest {
+public class CompilationUnitTest {
     
     @Test
     public void testAnalyze() {
@@ -24,6 +24,17 @@ public class SwitchStatementTest {
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
+        lexemes.add(new Lexeme(0, 0, "if", LexemeTypes.SELECTIVE_CONTROL_STRUCTURE));
+        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, ">", LexemeTypes.RELATIONAL_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "6", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "{", LexemeTypes.OPEN_BRACES));
+        lexemes.add(new Lexeme(0, 0, "return", LexemeTypes.FUNCTIONS));
+        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
+        lexemes.add(new Lexeme(0, 0, "}", LexemeTypes.CLOSE_BRACES));
         lexemes.add(new Lexeme(0, 0, "switch", LexemeTypes.SELECTIVE_CONTROL_STRUCTURE));
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
@@ -95,10 +106,10 @@ public class SwitchStatementTest {
         lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
         lexemes.add(new Lexeme(0, 0, "}", LexemeTypes.CLOSE_BRACES));
         
+        CompilationUnit cases = new CompilationUnit(null);
         TokensFlow tokensFlow = new TokensFlow(lexemes);
-        SwitchStatement switchStatement = new SwitchStatement(null);
         
-        assertEquals(9, switchStatement.analyze(tokensFlow, tokensFlow.getCurrentToken()).getChildCount());
+        assertEquals(2, cases.analyze(tokensFlow, tokensFlow.getCurrentToken()).getChildCount());
     }
     
 }

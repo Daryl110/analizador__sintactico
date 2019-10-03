@@ -5,7 +5,7 @@
  */
 package Model;
 
-import Model.Statement.BlockStatement;
+import Model.Statement.CompilationUnit;
 import Model.Statement.Structure.Statement;
 import java.util.ArrayList;
 
@@ -23,6 +23,6 @@ public class SyntacticAnalyzer {
 
     public Statement analyze() throws Exception {
         TokensFlow tokensFlow = new TokensFlow(this.lexemes);
-        return new BlockStatement(null).analyze(tokensFlow, tokensFlow.getCurrentToken());
+        return new CompilationUnit(null).analyze(tokensFlow, tokensFlow.getCurrentToken());
     }
 }
