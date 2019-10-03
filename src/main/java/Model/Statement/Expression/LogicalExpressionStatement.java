@@ -10,7 +10,6 @@ import Model.LexemeTypes;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
-import java.util.ArrayList;
 
 /**
  *
@@ -20,20 +19,21 @@ public class LogicalExpressionStatement extends Statement {
 
     private RelationalExpressionStatement relational;
     private int openedParenthesis;
-    private int positionBack = -1;
     private boolean operation;
+    private boolean withTerminalBoolean;
 
     public LogicalExpressionStatement(Statement root) {
-        this.childs = new ArrayList<>();
+        super(root);
         this.openedParenthesis = 0;
         this.operation = false;
+        this.withTerminalBoolean = false;
     }
 
     public LogicalExpressionStatement(Statement root, int positionBack) {
-        this.childs = new ArrayList<>();
+        super(root, positionBack);
         this.openedParenthesis = 0;
         this.operation = false;
-        this.positionBack = positionBack;
+        this.withTerminalBoolean = false;
     }
 
     @Override
@@ -67,6 +67,11 @@ public class LogicalExpressionStatement extends Statement {
                 lexeme = tokensFlow.getCurrentToken();
             } else {
                 this.childs.add(lexeme);
+                
+                if ((lexeme.getWord().equals("true") || lexeme.getWord().equals("false"))) {
+                    this.withTerminalBoolean = true;
+                }
+                
                 lexeme = tokensFlow.move();
             }
 
@@ -119,7 +124,7 @@ public class LogicalExpressionStatement extends Statement {
                     return null;
                 }
             } else {
-                if (this.openedParenthesis == 0 && operation) {
+                if (this.openedParenthesis == 0 && (operation || withTerminalBoolean)) {
                     return this;
                 }
                 if (this.positionBack != -1) {

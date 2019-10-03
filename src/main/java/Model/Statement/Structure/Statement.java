@@ -7,6 +7,7 @@ package Model.Statement.Structure;
 
 import Model.Lexeme;
 import Model.TokensFlow;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
@@ -18,6 +19,19 @@ import javax.swing.tree.TreeNode;
  */
 public abstract class Statement implements TreeNode{
     
+    protected int positionBack = -1;
+
+    public Statement(Statement root) {
+        this.root = root;
+        this.childs = new ArrayList<>();
+    }
+    
+    public Statement(Statement root, int positionBack) {
+        this.root = root;
+        this.childs = new ArrayList<>();
+        this.positionBack = positionBack;
+    }
+    
     /**
      * Sentencia dentro de la que se encuentra esta sentencia.
      */
@@ -28,9 +42,13 @@ public abstract class Statement implements TreeNode{
      */
     protected List<Statement> childs;
     
-    public abstract Statement analyze(TokensFlow tokensFlow, Lexeme lexeme);
     @Override
     public abstract String toString();
+    public abstract Statement analyze(TokensFlow tokensFlow, Lexeme lexeme);
+    
+    public boolean addChild(Statement statement){
+        return this.childs.add(statement);
+    }
     
     public void setParent(Statement root){
         this.root = root;
@@ -79,5 +97,9 @@ public abstract class Statement implements TreeNode{
      */
     public void setChilds(List<Statement> childs) {
         this.childs = childs;
+    }
+
+    public List<Statement> getChilds() {
+        return childs;
     }
 }

@@ -7,10 +7,10 @@ package Model.Statement.Expression;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
+import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
-import java.util.ArrayList;
 
 /**
  *
@@ -19,17 +19,22 @@ import java.util.ArrayList;
 public class NumericExpressionStatement extends Statement {
 
     private int openedParenthesis;
-    private int positionBack = -1;
+    private InvokeFunctionStatement invokeFunction;
+    private boolean invocationFunction;
+    private boolean operator;
 
     public NumericExpressionStatement(Statement root) {
-        this.childs = new ArrayList<>();
+        super(root);
         this.openedParenthesis = 0;
+        this.invocationFunction = false;
+        this.operator = false;
     }
 
     public NumericExpressionStatement(Statement root, int positionBack) {
-        this.childs = new ArrayList<>();
+        super(root, positionBack);
         this.openedParenthesis = 0;
-        this.positionBack = positionBack;
+        this.invocationFunction = false;
+        this.operator = false;
     }
 
     @Override
@@ -40,21 +45,37 @@ public class NumericExpressionStatement extends Statement {
     @Override
     public Statement analyze(TokensFlow tokensFlow, Lexeme lexeme) {
 
+        if (lexeme != null && (lexeme.getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)
+                && lexeme.getWord().equals("-"))) {
+
+            this.childs.add(lexeme);
+            lexeme = tokensFlow.move();
+        }
+        
         if (lexeme != null && lexeme.getType().equals(LexemeTypes.OPEN_PARENTHESIS)) {
 
             this.openedParenthesis++;
             this.childs.add(lexeme);
             lexeme = tokensFlow.move();
         }
-        if (lexeme != null && lexeme.getType().equals(LexemeTypes.NUMBERS)
-                || lexeme != null && lexeme.getType().equals(LexemeTypes.IDENTIFIERS)) {
+        this.invokeFunction = new InvokeFunctionStatement(this, tokensFlow.getPositionCurrent());
+        this.invokeFunction = (InvokeFunctionStatement) this.invokeFunction.analyze(tokensFlow, lexeme);
+        if (this.invokeFunction != null || (lexeme != null && lexeme.getType().equals(LexemeTypes.NUMBERS)
+                || lexeme != null && lexeme.getType().equals(LexemeTypes.IDENTIFIERS))) {
 
-            this.childs.add(lexeme);
-            lexeme = tokensFlow.move();
+            if (this.invokeFunction != null) {
+                this.childs.add(this.invokeFunction);
+                lexeme = tokensFlow.getCurrentToken();
+                this.invocationFunction = true;
+            } else {
+                this.childs.add(lexeme);
+                lexeme = tokensFlow.move();
+            }
 
             if (lexeme != null && lexeme.getType().equals(LexemeTypes.ARITHMETIC_OPERATORS)) {
                 this.childs.add(lexeme);
                 lexeme = tokensFlow.move();
+                this.operator = true;
 
                 return analyze(tokensFlow, lexeme);
 
@@ -79,7 +100,9 @@ public class NumericExpressionStatement extends Statement {
                         return analyze(tokensFlow, lexeme);
 
                     } else {
-                        if (this.openedParenthesis == 0) {
+                        if (this.openedParenthesis == 0
+                                && ((this.invocationFunction && this.operator)
+                                || !this.invocationFunction)) {
                             return this;
                         }
                         if (this.positionBack != -1) {
@@ -98,7 +121,9 @@ public class NumericExpressionStatement extends Statement {
                     return null;
                 }
             } else {
-                if (this.openedParenthesis == 0) {
+                if (this.openedParenthesis == 0
+                        && ((this.invocationFunction && this.operator)
+                        || !this.invocationFunction)) {
                     return this;
                 }
                 if (this.positionBack != -1) {
@@ -124,7 +149,9 @@ public class NumericExpressionStatement extends Statement {
                 return analyze(tokensFlow, lexeme);
 
             } else {
-                if (this.openedParenthesis == 0) {
+                if (this.openedParenthesis == 0
+                        && ((this.invocationFunction && this.operator)
+                        || !this.invocationFunction)) {
                     return this;
                 }
                 if (this.positionBack != -1) {
@@ -135,7 +162,10 @@ public class NumericExpressionStatement extends Statement {
                 return null;
             }
         } else {
-            if (this.openedParenthesis == 0 && this.childs.size() > 0) {
+            if (this.openedParenthesis == 0
+                    && ((this.invocationFunction && this.operator)
+                    || !this.invocationFunction)
+                    && this.childs.size() > 0) {
                 return this;
             }
             if (this.positionBack != -1) {

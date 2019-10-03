@@ -6,7 +6,7 @@
 package View;
 
 import Controller.LexemeController;
-import Model.SyntacticAnalizer;
+import Model.SyntacticAnalyzer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultTreeModel;
@@ -18,7 +18,7 @@ import javax.swing.tree.DefaultTreeModel;
 public class FrmMain extends javax.swing.JFrame {
 
     private final LexemeController ctlLexeme;
-    private SyntacticAnalizer syntacticAnalizer;
+    private SyntacticAnalyzer syntacticAnalyzer;
     
     /**
      * Creates new form FrmMain
@@ -167,8 +167,8 @@ public class FrmMain extends javax.swing.JFrame {
 
     private void btnAnalizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizeActionPerformed
         try {
-            this.syntacticAnalizer = new SyntacticAnalizer(this.ctlLexeme.lexemes);
-            this.treeDerivation.setModel(new DefaultTreeModel(this.syntacticAnalizer.analyze()));
+            this.syntacticAnalyzer = new SyntacticAnalyzer(this.ctlLexeme.lexemes);
+            this.treeDerivation.setModel(new DefaultTreeModel(this.syntacticAnalyzer.analyze()));
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

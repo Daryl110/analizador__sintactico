@@ -18,7 +18,24 @@ public class Lexeme extends Statement{
     private String word;
     private String type;
 
+    public Lexeme(Statement root, int row, int column, String word, String type) {
+        super(root);
+        this.row = row;
+        this.column = column;
+        this.word = word;
+        this.type = type;
+    }
+
+    public Lexeme(Statement root, int positionBack, int row, int column, String word, String type) {
+        super(root, positionBack);
+        this.row = row;
+        this.column = column;
+        this.word = word;
+        this.type = type;
+    }
+    
     public Lexeme(int row, int column, String word, String type) {
+        super(null, -1);
         this.row = row;
         this.column = column;
         this.word = word;

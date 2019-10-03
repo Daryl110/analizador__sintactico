@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.Statement.Expression;
+package Model.Statement.Assignment;
 
+import Model.Statement.Assignment.SimpleAssignmentStatement;
 import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.TokensFlow;
@@ -16,14 +17,20 @@ import static org.junit.Assert.*;
  *
  * @author Daryl Ospina
  */
-public class ArrayExpressionStatementTest {
+public class SimpleAssignmentStatementTest {
     
     @Test
     public void testAnalyze() {
         System.out.println("analyze");
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
-        ArrayExpressionStatement expressionStatement = new ArrayExpressionStatement(null);
+        SimpleAssignmentStatement expressionStatement = new SimpleAssignmentStatement(null);
+        
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "Array", LexemeTypes.DATA_TYPE));
+        
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "array", LexemeTypes.IDENTIFIERS));
+        
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "=", LexemeTypes.ASSIGNMENT_OPERATORS));
         
         lexemes.add(new Lexeme(expressionStatement, 0, 0, "[", LexemeTypes.OPEN_BRACKETS));
         lexemes.add(new Lexeme(expressionStatement, 0, 0, "5", LexemeTypes.NUMBERS));
@@ -59,8 +66,11 @@ public class ArrayExpressionStatementTest {
         lexemes.add(new Lexeme(expressionStatement, 0, 0, "6", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(expressionStatement, 0, 0, "]", LexemeTypes.CLOSE_BRACKETS));
         
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, ";", LexemeTypes.DELIMITERS));
+        
         TokensFlow tokensFlow = new TokensFlow(lexemes);
         
-        assertEquals(17, expressionStatement.analyze(tokensFlow,tokensFlow.getCurrentToken()).getChildCount());
+        assertEquals(5, expressionStatement.analyze(tokensFlow,tokensFlow.getCurrentToken()).getChildCount());
     }
+    
 }
