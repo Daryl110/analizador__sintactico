@@ -30,4 +30,5 @@ public class SyntacticTypes {
     public static final String ELSE_STATEMENT = "Else Statement";
     public static final String INCREMENTAL_DECREMENTAL_OPERATION_STATEMENT = "Incremental or Decremental Operation";
     public static final String FOR_STATEMENT = "For Statement";
+    public static final String WHILE_STATEMENT = "While Statement";
 }

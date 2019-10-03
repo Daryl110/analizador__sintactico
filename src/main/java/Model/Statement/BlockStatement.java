@@ -13,6 +13,7 @@ import Model.Statement.Assignment.IncrementalDecrementalOperationStatement;
 import Model.Statement.Assignment.OthersAssignmentsStatement;
 import Model.Statement.IF.IfStatement;
 import Model.Statement.Iterators.ForStatement;
+import Model.Statement.Iterators.WhileStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Switch.SwitchStatement;
 import Model.TokensFlow;
@@ -52,6 +53,7 @@ public class BlockStatement extends Statement {
 
             if (lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
                 this.statement.addChild(lexeme);
+                tokensFlow.move();
                 return this.statement;
             }
             if (this.positionBack != -1) {
@@ -76,6 +78,11 @@ public class BlockStatement extends Statement {
         if (this.statement != null) {
             return this.statement;
         }
+        this.statement = new WhileStatement(this.root, tokensFlow.getPositionCurrent());
+        this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
+        if (this.statement != null) {
+            return this.statement;
+        }
         this.statement = new ForStatement(this.root, tokensFlow.getPositionCurrent());
         this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
         if (this.statement != null) {
@@ -88,6 +95,7 @@ public class BlockStatement extends Statement {
 
             if (lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
                 this.statement.addChild(lexeme);
+                tokensFlow.move();
                 return this.statement;
             }
             if (this.positionBack != -1) {
