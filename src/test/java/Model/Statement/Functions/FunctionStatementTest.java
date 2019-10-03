@@ -7,9 +7,10 @@ package Model.Statement.Functions;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
-import Model.Statement.Structure.Statement;
 import Model.TokensFlow;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -19,9 +20,10 @@ import static org.junit.Assert.*;
  */
 public class FunctionStatementTest {
     
+    private Logger log = Logger.getLogger(FunctionStatementTest.class.getName());
+    
     @Test
     public void testAnalyze() {
-        System.out.println("analyze");
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
@@ -40,6 +42,8 @@ public class FunctionStatementTest {
         lexemes.add(new Lexeme(0, 0, "hola", LexemeTypes.IDENTIFIERS));
         lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
         lexemes.add(new Lexeme(0, 0, "}", LexemeTypes.CLOSE_BRACES));
+        
+        this.log.log(Level.INFO, "Analyze: {0}", lexemes.toString());
         
         TokensFlow tokensFlow = new TokensFlow(lexemes);
         FunctionStatement function = new FunctionStatement(null);

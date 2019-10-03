@@ -9,6 +9,8 @@ import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.TokensFlow;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -17,10 +19,11 @@ import static org.junit.Assert.*;
  * @author Daryl Ospina
  */
 public class ForStatementTest {
+    
+    private Logger log = Logger.getLogger(ForStatementTest.class.getName());
 
     @Test
     public void testAnalyze() {
-        System.out.println("analyze");
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
@@ -39,6 +42,8 @@ public class ForStatementTest {
         lexemes.add(new Lexeme(0, 0, "break", LexemeTypes.OTHERS));
         lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
         lexemes.add(new Lexeme(0, 0, "}", LexemeTypes.CLOSE_BRACES));
+        
+        this.log.log(Level.INFO, "Analyze: {0}", lexemes.toString());
         
         TokensFlow tokensFlow = new TokensFlow(lexemes);
         ForStatement forStatement = new ForStatement(null);

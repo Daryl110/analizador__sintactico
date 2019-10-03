@@ -5,11 +5,11 @@
  */
 package Model.Statement.Expression;
 
-import Model.Statement.Expression.NumericExpressionStatement;
 import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.TokensFlow;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -24,7 +24,6 @@ public class NumericExpressionStatementTest {
     
     @Test
     public void testAnalizar() {
-        this.log.info("Analisis de expresion numerica");
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
@@ -40,6 +39,8 @@ public class NumericExpressionStatementTest {
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        
+        this.log.log(Level.INFO, "Analyze: {0}", lexemes.toString());
         
         TokensFlow tokensFlow = new TokensFlow(lexemes);
         

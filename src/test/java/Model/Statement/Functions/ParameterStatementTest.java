@@ -9,6 +9,8 @@ import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.TokensFlow;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -18,14 +20,17 @@ import static org.junit.Assert.*;
  */
 public class ParameterStatementTest {
     
+    private Logger log = Logger.getLogger(ParameterStatementTest.class.getName());
+    
     @Test
     public void testAnalyze() {
-        System.out.println("analyze");
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
         lexemes.add(new Lexeme(0, 0, "Array", LexemeTypes.DATA_TYPE));
         lexemes.add(new Lexeme(0, 0, "array", LexemeTypes.IDENTIFIERS));
+        
+        this.log.log(Level.INFO, "Analyze: {0}", lexemes.toString());
         
         TokensFlow tokensFlow = new TokensFlow(lexemes);
         ParameterStatement parameterStatement = new ParameterStatement(null);

@@ -9,6 +9,8 @@ import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.TokensFlow;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -18,9 +20,10 @@ import static org.junit.Assert.*;
  */
 public class CaseStatementTest {
     
+    private Logger log = Logger.getLogger(CaseStatementTest.class.getName());
+    
     @Test
     public void testAnalyze() {
-        System.out.println("analyze");
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
@@ -36,6 +39,8 @@ public class CaseStatementTest {
         lexemes.add(new Lexeme(0, 0, "return", LexemeTypes.FUNCTIONS));
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ";", LexemeTypes.DELIMITERS));
+        
+        this.log.log(Level.INFO, "Analyze: {0}", lexemes.toString());
         
         CaseStatement cases = new CaseStatement(null);
         TokensFlow tokensFlow = new TokensFlow(lexemes);

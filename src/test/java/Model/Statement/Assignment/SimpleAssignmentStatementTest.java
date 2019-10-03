@@ -5,11 +5,12 @@
  */
 package Model.Statement.Assignment;
 
-import Model.Statement.Assignment.SimpleAssignmentStatement;
 import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.TokensFlow;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -19,9 +20,10 @@ import static org.junit.Assert.*;
  */
 public class SimpleAssignmentStatementTest {
     
+    private final Logger log = Logger.getLogger(SimpleAssignmentStatement.class.getName());
+    
     @Test
     public void testAnalyze() {
-        System.out.println("analyze");
         
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         SimpleAssignmentStatement expressionStatement = new SimpleAssignmentStatement(null);
@@ -67,6 +69,8 @@ public class SimpleAssignmentStatementTest {
         lexemes.add(new Lexeme(expressionStatement, 0, 0, "]", LexemeTypes.CLOSE_BRACKETS));
         
         lexemes.add(new Lexeme(expressionStatement, 0, 0, ";", LexemeTypes.DELIMITERS));
+        
+        this.log.log(Level.INFO, "Analyze: {0}", lexemes.toString());
         
         TokensFlow tokensFlow = new TokensFlow(lexemes);
         
