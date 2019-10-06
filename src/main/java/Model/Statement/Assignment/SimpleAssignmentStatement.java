@@ -82,7 +82,8 @@ public class SimpleAssignmentStatement extends Statement {
                         }
                     }
                 }
-            } else {
+            } else if((!lexeme.getType().equals(LexemeTypes.ASSIGNMENT_OPERATORS) || !(lexeme.getType().equals(LexemeTypes.ASSIGNMENT_OPERATORS)
+                    && lexeme.getWord().equals("="))) && !lexeme.getType().equals(LexemeTypes.DELIMITERS)){
                 if (this.positionBack != -1) {
                     tokensFlow.moveTo(this.positionBack);
                 } else {
