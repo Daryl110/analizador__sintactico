@@ -12,6 +12,7 @@ import Model.Statement.Others.ReturnStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -52,6 +53,20 @@ public class ArrowFunctionStatement extends Statement {
                     } else {
                         break;
                     }
+                } else {
+                    if (lexeme.getType().equals(LexemeTypes.IDENTIFIERS) || lexeme.getType().equals(LexemeTypes.NUMBERS)
+                            || lexeme.getType().equals(LexemeTypes.STRINGS)) {
+                        if (this.positionBack != -1) {
+                            tokensFlow.moveTo(this.positionBack);
+                        } else {
+                            tokensFlow.backTrack();
+                        }
+                        return null;
+                    } else {
+                        throw new SyntaxError("[Error] : "
+                                + tokensFlow.getCurrentToken().toString()
+                                + " se esperaba un parametro valido.");
+                    }
                 }
             }
 
@@ -76,22 +91,16 @@ public class ArrowFunctionStatement extends Statement {
                             while (lexeme != null && !lexeme.getType().equals(LexemeTypes.CLOSE_BRACES)) {
 
                                 if (lexeme.getType().equals(LexemeTypes.FUNCTIONS) && lexeme.getWord().equals("return")) {
-
-                                    if (lexeme.getWord().equals("return")) {
-                                        Statement returnStatement = new ReturnStatement(this, tokensFlow.getPositionCurrent());
-                                        returnStatement = returnStatement.analyze(tokensFlow, lexeme);
-                                        if (returnStatement != null) {
-                                            this.childs.add(returnStatement);
-                                            lexeme = tokensFlow.getCurrentToken();
-                                            break;
-                                        } else {
-                                            if (this.positionBack != -1) {
-                                                tokensFlow.moveTo(this.positionBack);
-                                            } else {
-                                                tokensFlow.backTrack();
-                                            }
-                                            return null;
-                                        }
+                                    Statement returnStatement = new ReturnStatement(this, tokensFlow.getPositionCurrent());
+                                    returnStatement = returnStatement.analyze(tokensFlow, lexeme);
+                                    if (returnStatement != null) {
+                                        this.childs.add(returnStatement);
+                                        lexeme = tokensFlow.getCurrentToken();
+                                        break;
+                                    } else {
+                                        throw new SyntaxError("[Error] : "
+                                                + tokensFlow.getCurrentToken().toString()
+                                                + " se esperaba un return valido.");
                                     }
                                 }
 
@@ -100,6 +109,10 @@ public class ArrowFunctionStatement extends Statement {
                                 if (statement != null) {
                                     this.childs.add(statement);
                                     lexeme = tokensFlow.getCurrentToken();
+                                } else {
+                                    throw new SyntaxError("[Error] : "
+                                            + tokensFlow.getCurrentToken().toString()
+                                            + " se esperaba una sentencia valido.");
                                 }
                             }
 
@@ -108,10 +121,30 @@ public class ArrowFunctionStatement extends Statement {
                                 tokensFlow.move();
 
                                 return this;
+                            } else {
+                                throw new SyntaxError("[Error] : "
+                                        + tokensFlow.getCurrentToken().toString()
+                                        + " se esperaba un } ");
                             }
+                        } else {
+                            throw new SyntaxError("[Error] : "
+                                    + tokensFlow.getCurrentToken().toString()
+                                    + " se esperaba un { ");
                         }
+                    } else {
+                        throw new SyntaxError("[Error] : "
+                                + tokensFlow.getCurrentToken().toString()
+                                + " se esperaba un > ");
                     }
+                } else {
+                    throw new SyntaxError("[Error] : "
+                            + tokensFlow.getCurrentToken().toString()
+                            + " se esperaba un - ");
                 }
+            } else {
+                throw new SyntaxError("[Error] : "
+                        + tokensFlow.getCurrentToken().toString()
+                        + " se esperaba un ) ");
             }
         }
         if (this.positionBack != -1) {

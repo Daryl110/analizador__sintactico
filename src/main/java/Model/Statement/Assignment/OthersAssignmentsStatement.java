@@ -47,7 +47,7 @@ public class OthersAssignmentsStatement extends Statement {
                 Statement value;
 
                 if (lexeme.getWord().equals("+=")) {
-                    value = new StringExpressionStatement(this, tokensFlow.getPositionCurrent());
+                    value = new InvokeFunctionStatement(this, tokensFlow.getPositionCurrent());
                     value = value.analyze(tokensFlow, tokensFlow.move());
                     if (value != null) {
                         this.childs.add(value);
@@ -92,7 +92,7 @@ public class OthersAssignmentsStatement extends Statement {
                         return null;
                     }
                 } else {
-                    value = new InvokeFunctionStatement(this.root, tokensFlow.getPositionCurrent());
+                    value = new StringExpressionStatement(this.root, tokensFlow.getPositionCurrent());
                     value = value.analyze(tokensFlow, lexeme);
                     if (value != null) {
                         this.childs.add(value);

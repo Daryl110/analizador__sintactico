@@ -13,6 +13,7 @@ import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -74,16 +75,20 @@ public class SimpleAssignmentStatement extends Statement {
                                 this.childs.add(this.expression);
                                 lexeme = tokensFlow.getCurrentToken();
                             } else {
-                                if (this.positionBack != -1) {
-                                    tokensFlow.moveTo(this.positionBack);
-                                } else {
-                                    tokensFlow.backTrack();
-                                }
-                                return null;
+                                throw new SyntaxError("[Error] : "
+                                        + tokensFlow.getCurrentToken().toString()
+                                        + " se esperaba una expresion valida ");
                             }
                         }
                     }
                 }
+            } else {
+                if (this.positionBack != -1) {
+                    tokensFlow.moveTo(this.positionBack);
+                } else {
+                    tokensFlow.backTrack();
+                }
+                return null;
             }
 
             if (lexeme != null && lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
@@ -92,12 +97,15 @@ public class SimpleAssignmentStatement extends Statement {
 
                 return this;
             } else {
-                if (this.positionBack != -1) {
-                    tokensFlow.moveTo(this.positionBack);
+                if (lexeme == null) {
+                    lexeme = tokensFlow.moveTo(tokensFlow.getPositionCurrent() - 1);
+                    throw new SyntaxError("[Error] : "
+                            + "se esperaba un ; al final de " + this.toString() + " posicion: row: " + lexeme.getRow() + " - columna: " + lexeme.getColumn());
                 } else {
-                    tokensFlow.backTrack();
+                    throw new SyntaxError("[Error] : "
+                            + tokensFlow.getCurrentToken().toString()
+                            + " se esperaba un ; ");
                 }
-                return null;
             }
         } else {
             if (this.positionBack != -1) {

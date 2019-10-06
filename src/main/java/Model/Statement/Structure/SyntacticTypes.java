@@ -35,4 +35,5 @@ public class SyntacticTypes {
     public static final String ARROW_FUNCTION_STATEMENT = "Arrow Function Statement";
     public static final String FUNCTION_STATEMENT = "Function Statement";
     public static final String FOR_EACH_STATEMENT = "For Each Statement";
+    public static final String CONCATENATION_EXPRESSION_STATEMENT = "Concatenation Expression Statement";
 }

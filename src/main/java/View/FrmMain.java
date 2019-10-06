@@ -10,6 +10,7 @@ import Model.SyntacticAnalyzer;
 import Model.exceptions.SyntaxError;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultTreeModel;
 
 /**
@@ -171,7 +172,7 @@ public class FrmMain extends javax.swing.JFrame {
             this.syntacticAnalyzer = new SyntacticAnalyzer(this.ctlLexeme.lexemes);
             this.treeDerivation.setModel(new DefaultTreeModel(this.syntacticAnalyzer.analyze()));
         }catch(Exception e){
-            throw new SyntaxError(e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_btnAnalizeActionPerformed
 

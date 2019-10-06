@@ -44,33 +44,6 @@ public class BlockStatement extends Statement {
 
     @Override
     public Statement analyze(TokensFlow tokensFlow, Lexeme lexeme) {
-        this.statement = new SimpleAssignmentStatement(this.root, tokensFlow.getPositionCurrent());
-        this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
-        if (this.statement != null) {
-            return this.statement;
-        }
-        this.statement = new InvokeFunctionStatement(this.root, tokensFlow.getPositionCurrent());
-        this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
-        if (this.statement != null) {
-            lexeme = tokensFlow.getCurrentToken();
-
-            if (lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
-                this.statement.addChild(lexeme);
-                tokensFlow.move();
-                return this.statement;
-            }
-            if (this.positionBack != -1) {
-                tokensFlow.moveTo(this.positionBack);
-            } else {
-                tokensFlow.backTrack();
-            }
-            return null;
-        }
-        this.statement = new OthersAssignmentsStatement(this.root, tokensFlow.getPositionCurrent());
-        this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
-        if (this.statement != null) {
-            return this.statement;
-        }
         this.statement = new FunctionStatement(this.root, tokensFlow.getPositionCurrent());
         this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
         if (this.statement != null) {
@@ -97,6 +70,33 @@ public class BlockStatement extends Statement {
             return this.statement;
         }
         this.statement = new ForEachStatement(this.root, tokensFlow.getPositionCurrent());
+        this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
+        if (this.statement != null) {
+            return this.statement;
+        }
+        this.statement = new SimpleAssignmentStatement(this.root, tokensFlow.getPositionCurrent());
+        this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
+        if (this.statement != null) {
+            return this.statement;
+        }
+        this.statement = new InvokeFunctionStatement(this.root, tokensFlow.getPositionCurrent());
+        this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
+        if (this.statement != null) {
+            lexeme = tokensFlow.getCurrentToken();
+
+            if (lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
+                this.statement.addChild(lexeme);
+                tokensFlow.move();
+                return this.statement;
+            }
+            if (this.positionBack != -1) {
+                tokensFlow.moveTo(this.positionBack);
+            } else {
+                tokensFlow.backTrack();
+            }
+            return null;
+        }
+        this.statement = new OthersAssignmentsStatement(this.root, tokensFlow.getPositionCurrent());
         this.statement = this.statement.analyze(tokensFlow, tokensFlow.getCurrentToken());
         if (this.statement != null) {
             return this.statement;
