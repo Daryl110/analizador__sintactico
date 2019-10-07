@@ -11,6 +11,7 @@ import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -111,6 +112,10 @@ public class NumericExpressionStatement extends Statement {
                                 && ((this.invocationFunction && this.operator)
                                 || !this.invocationFunction) && !this.endOperator) {
                             return this;
+                        } else if (this.openedParenthesis > 0) {
+                            throw new SyntaxError("los parentesis de la expresion numerica, estan mal distribuidos.");
+                        } else if (this.endOperator) {
+                            throw new SyntaxError("la expresion numerica no puede terminar con un operador");
                         }
                         if (this.positionBack != -1) {
                             tokensFlow.moveTo(this.positionBack);
@@ -132,6 +137,10 @@ public class NumericExpressionStatement extends Statement {
                         && ((this.invocationFunction && this.operator)
                         || !this.invocationFunction) && !this.endOperator) {
                     return this;
+                } else if (this.openedParenthesis > 0) {
+                    throw new SyntaxError("los parentesis de la expresion numerica, estan mal distribuidos.");
+                } else if (this.endOperator) {
+                    throw new SyntaxError("la expresion numerica no puede terminar con un operador");
                 }
                 if (this.positionBack != -1) {
                     tokensFlow.moveTo(this.positionBack);
@@ -162,6 +171,10 @@ public class NumericExpressionStatement extends Statement {
                         && ((this.invocationFunction && this.operator)
                         || !this.invocationFunction) && !this.endOperator) {
                     return this;
+                } else if (this.openedParenthesis > 0) {
+                    throw new SyntaxError("los parentesis de la expresion numerica, estan mal distribuidos.");
+                } else if (this.endOperator) {
+                    throw new SyntaxError("la expresion numerica no puede terminar con un operador");
                 }
                 if (this.positionBack != -1) {
                     tokensFlow.moveTo(this.positionBack);
@@ -176,6 +189,10 @@ public class NumericExpressionStatement extends Statement {
                     || !this.invocationFunction)
                     && this.childs.size() > 0 && !this.endOperator) {
                 return this;
+            } else if (this.openedParenthesis > 0) {
+                throw new SyntaxError("los parentesis de la expresion numerica, estan mal distribuidos.");
+            } else if (this.endOperator) {
+                throw new SyntaxError("la expresion numerica no puede terminar con un operador");
             }
             if (this.positionBack != -1) {
                 tokensFlow.moveTo(this.positionBack);

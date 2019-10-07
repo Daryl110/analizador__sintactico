@@ -36,13 +36,15 @@ public class StringExpressionStatementTest {
         lexemes.add(new Lexeme(0, 0, "+", LexemeTypes.ARITHMETIC_OPERATORS));
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.STRINGS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "+", LexemeTypes.ARITHMETIC_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.STRINGS));
         
         this.log.log(Level.INFO, "Analyze: {0}", lexemes.toString());
         
         StringExpressionStatement stringExpressionStatement = new StringExpressionStatement(null);
         TokensFlow tokensFlow = new TokensFlow(lexemes);
         
-        assertEquals(9, stringExpressionStatement.analyze(tokensFlow, tokensFlow.getCurrentToken()).getChildCount());
+        assertEquals(11, stringExpressionStatement.analyze(tokensFlow, tokensFlow.getCurrentToken()).getChildCount());
     
     }
 }

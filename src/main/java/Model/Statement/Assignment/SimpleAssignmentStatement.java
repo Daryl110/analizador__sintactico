@@ -82,8 +82,8 @@ public class SimpleAssignmentStatement extends Statement {
                         }
                     }
                 }
-            } else if((!lexeme.getType().equals(LexemeTypes.ASSIGNMENT_OPERATORS) || !(lexeme.getType().equals(LexemeTypes.ASSIGNMENT_OPERATORS)
-                    && lexeme.getWord().equals("="))) && !lexeme.getType().equals(LexemeTypes.DELIMITERS)){
+            } else if ((!lexeme.getType().equals(LexemeTypes.ASSIGNMENT_OPERATORS) || !(lexeme.getType().equals(LexemeTypes.ASSIGNMENT_OPERATORS)
+                    && lexeme.getWord().equals("="))) && !lexeme.getType().equals(LexemeTypes.DELIMITERS)) {
                 if (this.positionBack != -1) {
                     tokensFlow.moveTo(this.positionBack);
                 } else {
@@ -101,10 +101,11 @@ public class SimpleAssignmentStatement extends Statement {
                 if (lexeme == null) {
                     lexeme = tokensFlow.moveTo(tokensFlow.getPositionCurrent() - 1);
                     throw new SyntaxError("[Error] : "
-                            + "se esperaba un ; al final de " + this.toString() + " posicion: row: " + lexeme.getRow() + " - columna: " + lexeme.getColumn());
+                            + "se esperaba un ; al final de " + this.toString() 
+                            + " posicion: row: " + lexeme.getRow() + " - columna: " + lexeme.getColumn());
                 } else {
                     throw new SyntaxError("[Error] : "
-                            + tokensFlow.getCurrentToken().toString()
+                            + tokensFlow.moveTo(tokensFlow.getPositionCurrent() - 1).toString()
                             + " se esperaba un ; ");
                 }
             }

@@ -7,9 +7,11 @@ package Model.Statement.Expression;
 
 import Model.Lexeme;
 import Model.LexemeTypes;
+import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -18,8 +20,6 @@ import Model.TokensFlow;
 public class RelationalExpressionStatement extends Statement {
 
     private int openedParenthesis;
-    private NumericExpressionStatement numeric;
-    private StringExpressionStatement string;
     private boolean operation;
 
     public RelationalExpressionStatement(Statement root) {
@@ -43,160 +43,34 @@ public class RelationalExpressionStatement extends Statement {
     public Statement analyze(TokensFlow tokensFlow, Lexeme lexeme) {
 
         if (lexeme != null && lexeme.getType().equals(LexemeTypes.OPEN_PARENTHESIS)) {
-
-            this.openedParenthesis++;
             this.childs.add(lexeme);
+            this.openedParenthesis++;
             lexeme = tokensFlow.move();
         }
 
-        this.numeric = new NumericExpressionStatement(this, tokensFlow.getPositionCurrent());
-        if (this.numeric.analyze(tokensFlow, lexeme) != null) {
-
-            this.childs.add(this.numeric);
-            lexeme = tokensFlow.getCurrentToken();
-
-            if (lexeme != null && lexeme.getType().equals(LexemeTypes.RELATIONAL_OPERATORS)) {
-
-                this.childs.add(lexeme);
-                lexeme = tokensFlow.move();
-                this.operation = true;
-
-                return this.analyze(tokensFlow, lexeme);
-
-            } else if (this.openedParenthesis != 0 && lexeme != null) {
-                if (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
-
-                    this.openedParenthesis--;
-                    this.childs.add(lexeme);
-                    lexeme = tokensFlow.move();
-
-                    if (lexeme != null && !(lexeme.getType().equals(LexemeTypes.DELIMITERS)
-                            || lexeme.getType().equals(LexemeTypes.OPEN_BRACES))
-                            && (lexeme.getType().equals(LexemeTypes.RELATIONAL_OPERATORS)
-                            || (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS) && this.openedParenthesis != 0))) {
-
-                        this.childs.add(lexeme);
-                        if (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
-                            this.openedParenthesis--;
-                        }
-                        lexeme = tokensFlow.move();
-                        this.operation = true;
-
-                        return this.analyze(tokensFlow, lexeme);
-
-                    } else {
-                        if (this.openedParenthesis == 0 && operation) {
-                            return this;
-                        }
-                        if (this.positionBack != -1) {
-                            tokensFlow.moveTo(this.positionBack);
-                        } else {
-                            tokensFlow.backTrack();
-                        }
-                        return null;
-                    }
-                } else {
-                    if (this.positionBack != -1) {
-                        tokensFlow.moveTo(this.positionBack);
-                    } else {
-                        tokensFlow.backTrack();
-                    }
-                    return null;
-                }
-            } else {
-                if (this.openedParenthesis == 0 && operation) {
-                    return this;
-                }
-                if (this.positionBack != -1) {
-                    tokensFlow.moveTo(this.positionBack);
-                } else {
-                    tokensFlow.backTrack();
-                }
-                return null;
-            }
-        } else if (lexeme != null && lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS) && this.openedParenthesis != 0) {
-            if (!(lexeme.getType().equals(LexemeTypes.DELIMITERS)
-                    || lexeme.getType().equals(LexemeTypes.OPEN_BRACES))
-                    && (lexeme.getType().equals(LexemeTypes.RELATIONAL_OPERATORS)
-                    || lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS))) {
-
-                this.childs.add(lexeme);
-                if (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
-                    this.openedParenthesis--;
-                }
-                lexeme = tokensFlow.move();
-                this.operation = true;
-
-                return this.analyze(tokensFlow, lexeme);
-
-            } else {
-                if (this.openedParenthesis == 0 && operation) {
-                    return this;
-                }
-                if (this.positionBack != -1) {
-                    tokensFlow.moveTo(this.positionBack);
-                } else {
-                    tokensFlow.backTrack();
-                }
-                return null;
-            }
+        Statement invokeFunction = new InvokeFunctionStatement(this, tokensFlow.getPositionCurrent());
+        invokeFunction = invokeFunction.analyze(tokensFlow, lexeme);
+        if (invokeFunction != null) {
+            this.childs.add(invokeFunction);
+            return this.recursiveAnalyze(tokensFlow, tokensFlow.getCurrentToken());
         } else {
-            this.string = new StringExpressionStatement(this, tokensFlow.getPositionCurrent());
-            if (this.string.analyze(tokensFlow, lexeme) != null) {
-                this.childs.add(this.string);
-                lexeme = tokensFlow.getCurrentToken();
-
-                if (lexeme != null && lexeme.getType().equals(LexemeTypes.RELATIONAL_OPERATORS)) {
-
-                    this.childs.add(lexeme);
-                    lexeme = tokensFlow.move();
-                    this.operation = true;
-
-                    return this.analyze(tokensFlow, lexeme);
-
-                } else if (this.openedParenthesis != 0 && lexeme != null) {
-                    if (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
-
-                        this.openedParenthesis--;
-                        this.childs.add(lexeme);
-                        lexeme = tokensFlow.move();
-
-                        if (!(lexeme.getType().equals(LexemeTypes.DELIMITERS)
-                                || lexeme.getType().equals(LexemeTypes.OPEN_BRACES))
-                                && (lexeme.getType().equals(LexemeTypes.RELATIONAL_OPERATORS)
-                                || lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS))) {
-
-                            this.childs.add(lexeme);
-                            if (lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
-                                this.openedParenthesis--;
-                            }
-                            lexeme = tokensFlow.move();
-                            this.operation = true;
-
-                            return this.analyze(tokensFlow, lexeme);
-
-                        } else {
-                            if (this.openedParenthesis == 0 && operation) {
-                                return this;
-                            }
-                            if (this.positionBack != -1) {
-                                tokensFlow.moveTo(this.positionBack);
-                            } else {
-                                tokensFlow.backTrack();
-                            }
-                            return null;
-                        }
-                    } else {
-                        if (this.positionBack != -1) {
-                            tokensFlow.moveTo(this.positionBack);
-                        } else {
-                            tokensFlow.backTrack();
-                        }
-                        return null;
-                    }
+            Statement numeric = new NumericExpressionStatement(this, tokensFlow.getPositionCurrent());
+            numeric = numeric.analyze(tokensFlow, lexeme);
+            if (numeric != null) {
+                this.childs.add(numeric);
+                return this.recursiveAnalyze(tokensFlow, tokensFlow.getCurrentToken());
+            } else {
+                Statement string = new StringExpressionStatement(this, tokensFlow.getPositionCurrent());
+                string = string.analyze(tokensFlow, lexeme);
+                if (string != null) {
+                    this.childs.add(string);
+                    return this.recursiveAnalyze(tokensFlow, tokensFlow.getCurrentToken());
                 } else {
-                    if (this.openedParenthesis == 0 && operation) {
-                        return this;
+                    int size = this.childs.size() - 1;
+                    if (size > 0) {
+                        if (((Lexeme) (this.childs.get(size))).getType().equals(LexemeTypes.RELATIONAL_OPERATORS)) {
+                            throw new SyntaxError("la expresion relacional no puede terminar con un operador");
+                        }
                     }
                     if (this.positionBack != -1) {
                         tokensFlow.moveTo(this.positionBack);
@@ -205,10 +79,37 @@ public class RelationalExpressionStatement extends Statement {
                     }
                     return null;
                 }
-            } else {
-                if (this.openedParenthesis == 0 && this.childs.size() > 0) {
-                    return this;
+            }
+        }
+    }
+
+    private Statement recursiveAnalyze(TokensFlow tokensFlow, Lexeme lexeme) {
+        if (lexeme != null && lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS) && this.openedParenthesis > 0) {
+            this.childs.add(lexeme);
+            this.openedParenthesis--;
+            return this.recursiveAnalyze(tokensFlow, tokensFlow.move());
+        }
+        if (lexeme != null && lexeme.getType().equals(LexemeTypes.RELATIONAL_OPERATORS)) {
+            this.childs.add(lexeme);
+            this.operation = true;
+            return analyze(tokensFlow, tokensFlow.move());
+        } else {
+            if (this.openedParenthesis == 0 && this.childs.size() > 0 && this.operation) {
+                if (this.childs.size() == 1) {
+                    lexeme = (Lexeme) this.childs.get(this.childs.size() - 1);
+                    if (lexeme != null && lexeme.getType().equals(LexemeTypes.OPEN_PARENTHESIS)) {
+                        if (this.positionBack != -1) {
+                            tokensFlow.moveTo(this.positionBack);
+                        } else {
+                            tokensFlow.backTrack();
+                        }
+                        return null;
+                    }
                 }
+                return this;
+            } else if (this.openedParenthesis > 0) {
+                throw new SyntaxError("los parentesis de la expresion relacional, estan mal distribuidos.");
+            } else {
                 if (this.positionBack != -1) {
                     tokensFlow.moveTo(this.positionBack);
                 } else {

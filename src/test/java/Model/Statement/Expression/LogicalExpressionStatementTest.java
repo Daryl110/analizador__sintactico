@@ -28,6 +28,7 @@ public class LogicalExpressionStatementTest {
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "true", LexemeTypes.OTHERS));
         lexemes.add(new Lexeme(0, 0, "&&", LexemeTypes.LOGICAL_OPERATORS));
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
@@ -35,7 +36,10 @@ public class LogicalExpressionStatementTest {
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.STRINGS));
         lexemes.add(new Lexeme(0, 0, "==", LexemeTypes.RELATIONAL_OPERATORS));
         lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
@@ -46,6 +50,6 @@ public class LogicalExpressionStatementTest {
         LogicalExpressionStatement logicalExpressionStatement = new LogicalExpressionStatement(null);
         TokensFlow tokenFlow = new TokensFlow(lexemes);
         
-        assertEquals(7, logicalExpressionStatement.analyze(tokenFlow,tokenFlow.getCurrentToken()).getChildCount());
+        assertEquals(11, logicalExpressionStatement.analyze(tokenFlow,tokenFlow.getCurrentToken()).getChildCount());
     }
 }

@@ -11,6 +11,7 @@ import Model.Statement.Expression.ExpressionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -90,6 +91,17 @@ public class InvokeFunctionStatement extends Statement {
                             this.atLeastOneInvoke = true;
                             this.childs.add(lexeme);
                             return analyze(tokensFlow, tokensFlow.move());
+                        } else {
+                            if (lexeme == null) {
+                                lexeme = tokensFlow.moveTo(tokensFlow.getPositionCurrent() - 1);
+                                throw new SyntaxError("[Error] : "
+                                        + "se esperaba un ) al final de " + this.toString() 
+                                        + " posicion: row: " + lexeme.getRow() + " - columna: " + lexeme.getColumn());
+                            } else {
+                                throw new SyntaxError("[Error] : "
+                                        + tokensFlow.moveTo(tokensFlow.getPositionCurrent() - 1).toString()
+                                        + " se esperaba un ) ");
+                            }
                         }
                     }
                 }
@@ -141,12 +153,9 @@ public class InvokeFunctionStatement extends Statement {
                 return this;
             }
         } else {
-            if (this.positionBack != -1) {
-                tokensFlow.moveTo(this.positionBack);
-            } else {
-                tokensFlow.backTrack();
-            }
-            return null;
+            throw new SyntaxError("[Error] : "
+                                        + tokensFlow.getCurrentToken().toString()
+                                        + " se esperaba una expresion valida ");
         }
     }
 

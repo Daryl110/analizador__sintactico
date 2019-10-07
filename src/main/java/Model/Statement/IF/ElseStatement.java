@@ -12,6 +12,7 @@ import Model.Statement.Others.ReturnStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -95,6 +96,10 @@ public class ElseStatement extends Statement {
                     this.childs.add(lexeme);
                     tokensFlow.move();
                     return this;
+                } else {
+                    throw new SyntaxError("[Error] : "
+                            + tokensFlow.getCurrentToken().toString()
+                            + " se esperaba un }");
                 }
 
             } else if (lexeme != null && (lexeme.getType().equals(LexemeTypes.SELECTIVE_CONTROL_STRUCTURE)
@@ -113,6 +118,10 @@ public class ElseStatement extends Statement {
                     }
                     return null;
                 }
+            } else {
+                throw new SyntaxError("[Error] : "
+                        + tokensFlow.getCurrentToken().toString()
+                        + " se esperaba un { o una gramatica if");
             }
         }
         if (this.positionBack != -1) {

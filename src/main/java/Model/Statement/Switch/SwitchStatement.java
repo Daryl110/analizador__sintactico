@@ -11,6 +11,7 @@ import Model.Statement.Expression.ExpressionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -65,12 +66,9 @@ public class SwitchStatement extends Statement {
                                     this.childs.add(caseStatement);
                                     lexeme = tokensFlow.getCurrentToken();
                                 } else {
-                                    if (this.positionBack != -1) {
-                                        tokensFlow.moveTo(this.positionBack);
-                                    } else {
-                                        tokensFlow.backTrack();
-                                    }
-                                    return null;
+                                    throw new SyntaxError("[Error] : "
+                                        + tokensFlow.getCurrentToken().toString()
+                                        + " se esperaba un case valido");
                                 }
                             }
 
@@ -78,10 +76,30 @@ public class SwitchStatement extends Statement {
                                 this.childs.add(lexeme);
                                 tokensFlow.move();
                                 return this;
+                            } else {
+                                throw new SyntaxError("[Error] : "
+                                        + tokensFlow.getCurrentToken().toString()
+                                        + " se esperaba un }");
                             }
+                        } else {
+                            throw new SyntaxError("[Error] : "
+                                    + tokensFlow.getCurrentToken().toString()
+                                    + " se esperaba un {");
                         }
+                    } else {
+                        throw new SyntaxError("[Error] : "
+                                + tokensFlow.getCurrentToken().toString()
+                                + " se esperaba un )");
                     }
+                } else {
+                    throw new SyntaxError("[Error] : "
+                            + tokensFlow.getCurrentToken().toString()
+                            + " se esperaba una expesion valida");
                 }
+            } else {
+                throw new SyntaxError("[Error] : "
+                        + tokensFlow.getCurrentToken().toString()
+                        + " se esperaba un )");
             }
         }
         if (this.positionBack != -1) {

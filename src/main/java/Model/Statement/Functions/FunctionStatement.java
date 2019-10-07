@@ -12,6 +12,7 @@ import Model.Statement.Others.ReturnStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -70,6 +71,16 @@ public class FunctionStatement extends Statement {
                             }
                         }
 
+                        try {
+                            Lexeme lex = ((Lexeme) (this.childs.get(this.childs.size() - 1)));
+                            if (lex.getType().equals(LexemeTypes.OTHERS) && lex.getWord().equals(",")) {
+                                throw new SyntaxError("[Error] : "
+                                        + lex.toString()
+                                        + " se esperaba un )");
+                            }
+                        } catch (ClassCastException e) {
+                        }
+
                         if (lexeme != null && lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
                             this.childs.add(lexeme);
                             lexeme = tokensFlow.move();
@@ -113,11 +124,35 @@ public class FunctionStatement extends Statement {
                                     tokensFlow.move();
 
                                     return this;
+                                } else {
+                                    throw new SyntaxError("[Error] : "
+                                            + tokensFlow.getCurrentToken().toString()
+                                            + " se esperaba un }");
                                 }
+                            } else {
+                                throw new SyntaxError("[Error] : "
+                                        + tokensFlow.getCurrentToken().toString()
+                                        + " se esperaba un {");
                             }
+                        } else {
+                            throw new SyntaxError("[Error] : "
+                                    + tokensFlow.getCurrentToken().toString()
+                                    + " se esperaba un )");
                         }
+                    } else {
+                        throw new SyntaxError("[Error] : "
+                                + tokensFlow.getCurrentToken().toString()
+                                + " se esperaba un (");
                     }
+                } else {
+                    throw new SyntaxError("[Error] : "
+                            + tokensFlow.getCurrentToken().toString()
+                            + " se esperaba un identificador");
                 }
+            } else {
+                throw new SyntaxError("[Error] : "
+                        + tokensFlow.getCurrentToken().toString()
+                        + " se esperaba un tipo de return valido.");
             }
         }
         if (this.positionBack != -1) {

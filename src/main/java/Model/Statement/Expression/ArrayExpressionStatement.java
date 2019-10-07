@@ -13,6 +13,7 @@ import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -55,12 +56,7 @@ public class ArrayExpressionStatement extends Statement {
                     tokensFlow.move();
                     return this;
                 } else {
-                    if (this.positionBack != -1) {
-                        tokensFlow.moveTo(this.positionBack);
-                    } else {
-                        tokensFlow.backTrack();
-                    }
-                    return null;
+                    throw new SyntaxError("La gramatica de array debe cerrar con corchetes ]");
                 }
             }
         } else {
@@ -128,7 +124,7 @@ public class ArrayExpressionStatement extends Statement {
                         }
                     } else {
                         this.numeric = new NumericExpressionStatement(this, tokensFlow.getPositionCurrent());
-                        this.numeric = (NumericExpressionStatement) this. numeric.analyze(tokensFlow, lexeme);
+                        this.numeric = (NumericExpressionStatement) this.numeric.analyze(tokensFlow, lexeme);
 
                         if (this.numeric != null) {
                             this.childs.add(this.numeric);
@@ -193,12 +189,19 @@ public class ArrayExpressionStatement extends Statement {
                                                     return lexeme;
                                                 }
                                             } else {
-                                                return null;
+                                                throw new SyntaxError("Error en los valores del array");
                                             }
                                         }
                                     }
                                 }
                             } else {
+                                int size = this.childs.size() - 1;
+                                if (size > 0) {
+                                    lexeme = ((Lexeme) this.childs.get(this.childs.size() - 1));
+                                    if (lexeme.getType().equals(LexemeTypes.OTHERS) && lexeme.getWord().equals(",")) {
+                                        throw new SyntaxError("Upss hay una , de mas en el array");
+                                    }
+                                }
                                 return lexeme;
                             }
                         }

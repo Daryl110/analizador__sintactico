@@ -12,6 +12,7 @@ import Model.Statement.Others.ReturnStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -42,28 +43,28 @@ public class ForEachStatement extends Statement {
             if (lexeme != null && lexeme.getType().equals(LexemeTypes.OPEN_PARENTHESIS)) {
                 this.childs.add(lexeme);
                 lexeme = tokensFlow.move();
-                
+
                 if (lexeme != null && lexeme.getType().equals(LexemeTypes.DATA_TYPE)) {
                     this.childs.add(lexeme);
                     lexeme = tokensFlow.move();
-                    
+
                     if (lexeme != null && lexeme.getType().equals(LexemeTypes.IDENTIFIERS)) {
                         this.childs.add(lexeme);
                         lexeme = tokensFlow.move();
-                        
+
                         if (lexeme != null && (lexeme.getType().equals(LexemeTypes.OTHERS)
                                 && lexeme.getWord().equals(":"))) {
                             this.childs.add(lexeme);
                             lexeme = tokensFlow.move();
-                            
+
                             if (lexeme != null && lexeme.getType().equals(LexemeTypes.IDENTIFIERS)) {
                                 this.childs.add(lexeme);
                                 lexeme = tokensFlow.move();
-                                
+
                                 if (lexeme != null && lexeme.getType().equals(LexemeTypes.CLOSE_PARENTHESIS)) {
                                     this.childs.add(lexeme);
                                     lexeme = tokensFlow.move();
-                                    
+
                                     if (lexeme != null && lexeme.getType().equals(LexemeTypes.OPEN_BRACES)) {
                                         this.childs.add(lexeme);
                                         lexeme = tokensFlow.move();
@@ -121,14 +122,47 @@ public class ForEachStatement extends Statement {
                                             tokensFlow.move();
 
                                             return this;
+                                        } else {
+                                            throw new SyntaxError("[Error] : "
+                                                    + tokensFlow.getCurrentToken().toString()
+                                                    + " se esperaba un }");
                                         }
+                                    } else {
+                                        throw new SyntaxError("[Error] : "
+                                                + tokensFlow.getCurrentToken().toString()
+                                                + " se esperaba un {");
                                     }
+                                } else {
+                                    throw new SyntaxError("[Error] : "
+                                            + tokensFlow.getCurrentToken().toString()
+                                            + " se esperaba un )");
                                 }
+                            } else {
+                                throw new SyntaxError("[Error] : "
+                                        + tokensFlow.getCurrentToken().toString()
+                                        + " se esperaba un identidicador");
                             }
+                        } else {
+                            throw new SyntaxError("[Error] : "
+                                    + tokensFlow.getCurrentToken().toString()
+                                    + " se esperaba un :");
                         }
+                    } else {
+                        throw new SyntaxError("[Error] : "
+                                + tokensFlow.getCurrentToken().toString()
+                                + " se esperaba un identificador");
                     }
+                } else {
+                    throw new SyntaxError("[Error] : "
+                            + tokensFlow.getCurrentToken().toString()
+                            + " se esperaba un tipo de dato valido");
                 }
+            } else {
+                throw new SyntaxError("[Error] : "
+                        + tokensFlow.getCurrentToken().toString()
+                        + " se esperaba un (");
             }
+
         }
         if (this.positionBack != -1) {
             tokensFlow.moveTo(this.positionBack);

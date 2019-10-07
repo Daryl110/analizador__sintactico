@@ -34,6 +34,8 @@ public class RelationalExpressionStatementTest {
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "==", LexemeTypes.RELATIONAL_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
         
         this.log.log(Level.INFO, "Analyze: {0}", lexemes.toString());
 
@@ -42,7 +44,7 @@ public class RelationalExpressionStatementTest {
         TokensFlow tokenFlow = new TokensFlow(lexemes);
         
         
-        assertEquals(7, relationalExpressionStatement.analyze( tokenFlow,tokenFlow.getCurrentToken()).getChildCount());
+        assertEquals(9, relationalExpressionStatement.analyze( tokenFlow,tokenFlow.getCurrentToken()).getChildCount());
     }
 
 }

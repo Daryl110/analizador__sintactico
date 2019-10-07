@@ -39,6 +39,8 @@ public class NumericExpressionStatementTest {
         lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         lexemes.add(new Lexeme(0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        lexemes.add(new Lexeme(0, 0, "+", LexemeTypes.ARITHMETIC_OPERATORS));
+        lexemes.add(new Lexeme(0, 0, "5", LexemeTypes.NUMBERS));
         
         this.log.log(Level.INFO, "Analyze: {0}", lexemes.toString());
         
@@ -48,6 +50,6 @@ public class NumericExpressionStatementTest {
         
         tokensFlow.savePositionCurrent();
         
-        assertEquals(9, numericExpressionStatement.analyze(tokensFlow, tokensFlow.getCurrentToken()).getChildCount());
+        assertEquals(11, numericExpressionStatement.analyze(tokensFlow, tokensFlow.getCurrentToken()).getChildCount());
     }
 }

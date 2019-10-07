@@ -8,9 +8,12 @@ package Model.Statement.Others;
 import Model.Lexeme;
 import Model.LexemeTypes;
 import Model.Statement.Expression.ExpressionStatement;
+import Model.Statement.Functions.ArrowFunctionStatement;
+import Model.Statement.Functions.InvokeFunctionStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -49,6 +52,24 @@ public class ReturnStatement extends Statement {
                 if (expression != null) {
                     this.childs.add(expression);
                     lexeme = tokensFlow.getCurrentToken();
+                } else {
+                    Statement invokeFunction = new InvokeFunctionStatement(this, tokensFlow.getPositionCurrent());
+                    invokeFunction = invokeFunction.analyze(tokensFlow, lexeme);
+                    if (invokeFunction != null) {
+                        this.childs.add(invokeFunction);
+                        lexeme = tokensFlow.getCurrentToken();
+                    } else {
+                        Statement arrowFunction = new ArrowFunctionStatement(this, tokensFlow.getPositionCurrent());
+                        arrowFunction = arrowFunction.analyze(tokensFlow, lexeme);
+                        if (arrowFunction != null) {
+                            this.childs.add(arrowFunction);
+                            lexeme = tokensFlow.getCurrentToken();
+                        } else {
+                            throw new SyntaxError("[Error] : "
+                                    + tokensFlow.getCurrentToken().toString()
+                                    + " se esperaba una expresion valida de retorno");
+                        }
+                    }
                 }
             }
 

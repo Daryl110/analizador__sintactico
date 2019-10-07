@@ -10,6 +10,7 @@ import Model.LexemeTypes;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -68,7 +69,7 @@ public class StringExpressionStatement extends Statement {
                 return this.analyze(tokensFlow, lexeme);
             }
         }
-        
+
         if (this.openedParenthesis == 0 && this.childs.size() > 0 && this.withString && !this.operator) {
             if (this.childs.size() == 1) {
                 lexeme = (Lexeme) this.childs.get(this.childs.size() - 1);
@@ -82,6 +83,10 @@ public class StringExpressionStatement extends Statement {
                 }
             }
             return this;
+        } else if (this.openedParenthesis > 0) {
+            throw new SyntaxError("los parentesis de la expresion cadena, estan mal distribuidos.");
+        } else if (this.operator) {
+            throw new SyntaxError("la expresion cadena no puede terminar con un +");
         }
 
         if (this.positionBack != -1) {

@@ -54,19 +54,12 @@ public class ArrowFunctionStatement extends Statement {
                         break;
                     }
                 } else {
-                    if (lexeme.getType().equals(LexemeTypes.IDENTIFIERS) || lexeme.getType().equals(LexemeTypes.NUMBERS)
-                            || lexeme.getType().equals(LexemeTypes.STRINGS)) {
-                        if (this.positionBack != -1) {
-                            tokensFlow.moveTo(this.positionBack);
-                        } else {
-                            tokensFlow.backTrack();
-                        }
-                        return null;
+                    if (this.positionBack != -1) {
+                        tokensFlow.moveTo(this.positionBack);
                     } else {
-                        throw new SyntaxError("[Error] : "
-                                + tokensFlow.getCurrentToken().toString()
-                                + " se esperaba un parametro valido.");
+                        tokensFlow.backTrack();
                     }
+                    return null;
                 }
             }
 
@@ -112,7 +105,7 @@ public class ArrowFunctionStatement extends Statement {
                                 } else {
                                     throw new SyntaxError("[Error] : "
                                             + tokensFlow.getCurrentToken().toString()
-                                            + " se esperaba una sentencia valido.");
+                                            + " se esperaba una sentencia valida.");
                                 }
                             }
 

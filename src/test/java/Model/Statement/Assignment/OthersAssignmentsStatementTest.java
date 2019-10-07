@@ -32,9 +32,12 @@ public class OthersAssignmentsStatementTest {
         
         lexemes.add(new Lexeme(expressionStatement, 0, 0, "+=", LexemeTypes.ASSIGNMENT_OPERATORS));
         
-        lexemes.add(new Lexeme(expressionStatement, 0, 0, "5", LexemeTypes.NUMBERS));
-        lexemes.add(new Lexeme(expressionStatement, 0, 0, "+", LexemeTypes.ARITHMETIC_OPERATORS));
-        lexemes.add(new Lexeme(expressionStatement, 0, 0, "5", LexemeTypes.NUMBERS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "sum", LexemeTypes.IDENTIFIERS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "sum", LexemeTypes.IDENTIFIERS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, "(", LexemeTypes.OPEN_PARENTHESIS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
+        lexemes.add(new Lexeme(expressionStatement, 0, 0, ")", LexemeTypes.CLOSE_PARENTHESIS));
         
         lexemes.add(new Lexeme(expressionStatement, 0, 0, ";", LexemeTypes.DELIMITERS));
         
