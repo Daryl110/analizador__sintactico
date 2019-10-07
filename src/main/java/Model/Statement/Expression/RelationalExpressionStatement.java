@@ -16,6 +16,7 @@ import Model.exceptions.SyntaxError;
 /**
  *
  * @author Daryl Ospina
+ * 
  */
 public class RelationalExpressionStatement extends Statement {
 
