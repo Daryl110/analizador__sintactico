@@ -13,6 +13,7 @@ import Model.Statement.Others.ReturnStatement;
 import Model.Statement.Structure.Statement;
 import Model.Statement.Structure.SyntacticTypes;
 import Model.TokensFlow;
+import Model.exceptions.SyntaxError;
 
 /**
  *
@@ -111,10 +112,30 @@ public class WhileStatement extends Statement {
                                 tokensFlow.move();
 
                                 return this;
+                            } else {
+                                throw new SyntaxError("[Error] : "
+                                        + tokensFlow.getCurrentToken().toString()
+                                        + " se esperaba un }");
                             }
+                        } else {
+                            throw new SyntaxError("[Error] : "
+                                    + tokensFlow.getCurrentToken().toString()
+                                    + " se esperaba un {");
                         }
+                    } else {
+                        throw new SyntaxError("[Error] : "
+                                + tokensFlow.getCurrentToken().toString()
+                                + " se esperaba un )");
                     }
+                } else {
+                    throw new SyntaxError("[Error] : "
+                            + tokensFlow.getCurrentToken().toString()
+                            + " se esperaba una operacion logica o relacional");
                 }
+            } else {
+                throw new SyntaxError("[Error] : "
+                        + tokensFlow.getCurrentToken().toString()
+                        + " se esperaba un )");
             }
         }
         if (this.positionBack != -1) {

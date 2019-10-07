@@ -20,6 +20,10 @@ public class TokensFlow {
     public TokensFlow(List<Lexeme> lista) {
         this.lexemes = lista;
     }
+    
+    public Lexeme getLexeme(int index){
+        return this.lexemes.get(index);
+    }
 
     public Lexeme move() {
         posCurrent++;
